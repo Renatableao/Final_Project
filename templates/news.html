@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    My News
+{% endblock %}
+
+{% block main %}
+    <form action="/" method="post" class="news_list">
+    <div class= "container">
+        {% for new in result %}
+            <section>
+                <span><img src= "{{ new['provider'][0]['image']['thumbnail']['contentUrl'] }}"></img></span><a href="{{ new['url'] }}">{{ new["name"] }}</a>
+                <p>{{ new["description"] }}</p>
+            </section>
+        {% endfor %}
+    </div>
+    </form>
+{% endblock %}

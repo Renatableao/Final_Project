@@ -1,0 +1,88 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+#nav {  
+    font-size: small;
+}
+
+body {
+    height: 100vh;
+    font-family: "Poppins", Arial, Helvetica, sans-serif;
+    background-color:#ffd000; 
+    
+}
+
+.news {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    gap:9rem;
+    margin-top: 1rem;
+   
+}
+
+.newstitle
+{
+    font-size: 12rem;
+    font-weight: bold;
+    margin-left: 12rem;
+    color: black;
+}
+
+.selection {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+
+}
+
+.news_list {
+
+    position: relative;
+    background-color: white;
+    margin: 20rem auto; 
+    height: 100%;
+    width: 98%;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+
+main {
+    height: 100%;
+    width: 100%;
+}
+
+
+#select {
+    padding: 0rem;
+    width: 8rem;
+    height: 2.5rem;
+    font-size: 14px;
+    background: #ffd000;
+    text-align: center;
+}
+
+#submit {
+    width: 6rem;
+    height: 1.8rem;
+    font-size: 0.7rem;
+    border-radius: 2rem;
+    background-color: transparent;
+    color: #939597;
+    border-color: #939597;
+}
+
+footer {
+    background-color: #ffd000;
+}
+

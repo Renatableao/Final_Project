@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Search News
+{% endblock %}
+
+{% block section %}
+    <form action="/" method="post" class="selection">
+                <select name="language" id="select">
+                    <option disabled selected>Language</option>
+                    <option value="BR">Portuguese</option>
+                    <option value="US">English</option>
+                    <option value="FR">French</option>
+                    <option value="IT">Italian</option>
+                    <option value="CN">Chinese</option>
+            </select>
+            <select name="category" class="form-select mx-auto" type="text" id="text-input">
+                    <option disabled selected>Category</option>
+                    <option value="business">Business</option>
+                    <option value="entertainment">Entertainment</option>
+                    <option value="sports">Sports</option>
+                    <option value="world">World</option>
+            </select>
+        <button class="btn btn-primary" id="submit" type="submit">Search News</button>
+    </form>
+{% endblock %}
