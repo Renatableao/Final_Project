@@ -1,26 +1,62 @@
 {% extends "layout.html" %}
 
+{% block script %} 
+<script type="text/javascript">
+  function myfunc_l( thisObj )
+  {
+    var name = thisObj.name;
+    var text = thisObj.innerText;
+    document.getElementById("language").innerHTML = text
+    document.getElementById("input_lan").value= name
+    
+  }
+
+  function myfunc_c( thisObj )
+  {
+    var name = thisObj.name;
+    var text = thisObj.innerText;
+    document.getElementById("category").innerHTML = text 
+    document.getElementById("input_categ").value= name
+  }
+</script>
+{% endblock %}
+
+
 {% block title %}
     Search News
 {% endblock %}
 
 {% block section %}
+  {% if not session["user_id"] %}
+    <p class="newstitle">news</p>
+  {% endif %}
     <form action="/" method="post" class="selection">
-                <select name="language" id="select">
-                    <option disabled selected>Language</option>
-                    <option value="BR">Portuguese</option>
-                    <option value="US">English</option>
-                    <option value="FR">French</option>
-                    <option value="IT">Italian</option>
-                    <option value="CN">Chinese</option>
-            </select>
-            <select name="category" class="form-select mx-auto" type="text" id="text-input">
-                    <option disabled selected>Category</option>
-                    <option value="business">Business</option>
-                    <option value="entertainment">Entertainment</option>
-                    <option value="sports">Sports</option>
-                    <option value="world">World</option>
-            </select>
-        <button class="btn btn-primary" id="submit" type="submit">Search News</button>
+      <nav class="option">
+        <input type="hidden" id="input_lan" name = "input_lan" value="language">
+        <ul>
+          <li><a id="language" href="#">Language</a>
+            <ul>
+              <li><a class ="language" name="US" href="#" onclick="myfunc_l(this)">English</a></li>
+              <li><a class ="language" name="BR" href="#" onclick="myfunc_l(this)">Portuguese</a></li>
+              <li><a class ="language" name="FR" href="#" onclick="myfunc_l(this)">French</a></li>
+              <li><a class ="language" name="IT" href="#" onclick="myfunc_l(this)">Italian</a></li>
+              <li><a class ="language" name="CN" href="#" onclick="myfunc_l(this)">Chinese</a></li>
+            </ul>
+          </li>
+        </ul>
+    
+        <ul>
+          <li><a id= "category" href="#">Category</a>
+            <input type="hidden" id="input_categ" name = "input_categ" value="category">
+            <ul>
+              <li><a class ="category" name="business" href="#" onclick="myfunc_c(this)">Business</a></li>
+              <li><a class ="category" name="entertainment" href="#" onclick="myfunc_c(this)">Entertainment</a></li>
+              <li><a class ="category" name="sports" href="#" onclick="myfunc_c(this)">Sports</a></li>
+              <li><a class ="category" name="world" href="#" onclick="myfunc_c(this)">World</a></li>
+            </ul>
+          </li>
+        </ul>
+        <button class="btn btn-primary" id="submit" type="submit">Search</button>
+      </nav> 
     </form>
 {% endblock %}

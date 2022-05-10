@@ -36,18 +36,19 @@ def index():
 	# User reached route via POST
 	if request.method == "POST":
 	
-		# Ensure symbol is provided
-		if not request.form.get("language"):
+		# Ensure language is provided
+		if not request.form.get("input_lan"):
 			return apology("Must provide language", 400)
 
-		if not request.form.get("category"):
+        # Ensure category is provided
+		if not request.form.get("input_categ"):
 			return apology("Must provide category", 400)
 
 		else:	
-			language = request.form.get("language")
-			category = request.form.get("category")
+			country = request.form.get("input_lan")
+			category = request.form.get("input_categ")
 		
-			result = search(language, category)
+			result = search(country, category)
 
 			return render_template("news.html", result=result)
 
