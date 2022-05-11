@@ -1,24 +1,23 @@
 {% extends "layout.html" %}
 
 {% block script %} 
-<script type="text/javascript">
-  function myfunc_l( thisObj )
-  {
-    var name = thisObj.name;
-    var text = thisObj.innerText;
-    document.getElementById("language").innerHTML = text
-    document.getElementById("input_lan").value= name
-    
-  }
+  <script type="text/javascript">
+    function myfunc_language( thisObj )
+    {
+      var clicked_name = thisObj.name;
+      var clicked_text = thisObj.innerText;
+      document.getElementById("select_language").innerHTML = clicked_text
+      document.getElementById("input_language").value= clicked_name
+    }
 
-  function myfunc_c( thisObj )
-  {
-    var name = thisObj.name;
-    var text = thisObj.innerText;
-    document.getElementById("category").innerHTML = text 
-    document.getElementById("input_categ").value= name
-  }
-</script>
+    function myfunc_category( thisObj )
+    {
+      var clicked_name = thisObj.name;
+      var clicked_text = thisObj.innerText;
+      document.getElementById("select_category").innerHTML = clicked_text 
+      document.getElementById("input_category").value= clicked_name
+    }
+  </script>
 {% endblock %}
 
 
@@ -30,29 +29,29 @@
   {% if not session["user_id"] %}
     <p class="newstitle">news</p>
   {% endif %}
-    <form action="/" method="post" class="selection">
-      <nav class="option">
-        <input type="hidden" id="input_lan" name = "input_lan" value="language">
+    
+  <form action="/" method="post">
+    <nav class="search_param">
+        <input type="hidden" id="input_language" name ="input_language" value="language">
         <ul>
-          <li><a id="language" href="#">Language</a>
+          <li><a id="select_language" href="#">Language</a>
             <ul>
-              <li><a class ="language" name="US" href="#" onclick="myfunc_l(this)">English</a></li>
-              <li><a class ="language" name="BR" href="#" onclick="myfunc_l(this)">Portuguese</a></li>
-              <li><a class ="language" name="FR" href="#" onclick="myfunc_l(this)">French</a></li>
-              <li><a class ="language" name="IT" href="#" onclick="myfunc_l(this)">Italian</a></li>
-              <li><a class ="language" name="CN" href="#" onclick="myfunc_l(this)">Chinese</a></li>
+              <li><a class ="language" name="US" href="#" onclick="myfunc_language(this)">English</a></li>
+              <li><a class ="language" name="BR" href="#" onclick="myfunc_language(this)">Portuguese</a></li>
+              <li><a class ="language" name="FR" href="#" onclick="myfunc_language(this)">French</a></li>
+              <li><a class ="language" name="IT" href="#" onclick="myfunc_language(this)">Italian</a></li>
+              <li><a class ="language" name="CN" href="#" onclick="myfunc_language(this)">Chinese</a></li>
             </ul>
           </li>
         </ul>
-    
+        <input type="hidden" id="input_category" name = "input_category" value="category">
         <ul>
-          <li><a id= "category" href="#">Category</a>
-            <input type="hidden" id="input_categ" name = "input_categ" value="category">
+          <li><a id= "select_category" href="#">Category</a>
             <ul>
-              <li><a class ="category" name="business" href="#" onclick="myfunc_c(this)">Business</a></li>
-              <li><a class ="category" name="entertainment" href="#" onclick="myfunc_c(this)">Entertainment</a></li>
-              <li><a class ="category" name="sports" href="#" onclick="myfunc_c(this)">Sports</a></li>
-              <li><a class ="category" name="world" href="#" onclick="myfunc_c(this)">World</a></li>
+              <li><a class ="category" name="business" href="#" onclick="myfunc_category(this)">Business</a></li>
+              <li><a class ="category" name="entertainment" href="#" onclick="myfunc_category(this)">Entertainment</a></li>
+              <li><a class ="category" name="sports" href="#" onclick="myfunc_category(this)">Sports</a></li>
+              <li><a class ="category" name="world" href="#" onclick="myfunc_category(this)">World</a></li>
             </ul>
           </li>
         </ul>
