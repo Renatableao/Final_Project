@@ -70,9 +70,15 @@
         <div class= "news_list">
             {% for new in news_result %}
                 <section class="new_container">
-                    <a href="{{ new['url'] }}">{{ new["name"] }}</a>
-                    <p>{{ new["description"] }}</p>
-                    <span><img src= "{{ new['provider'][0]['image']['thumbnail']['contentUrl'] }}"></img></span>
+                    {% if new['image'] %}
+                        <img src ="{{ new['image']['contentUrl'] }}"></img>
+                        <a href="{{ new['url'] }}">{{ new["name"] }}</a>
+                        <p id="provider">{{ new['provider'][0]['name'].upper() }}</p>
+                    {% else %}
+                        <a href="{{ new['url'] }}">{{ new["name"] }}</a>
+                        <p id="description">{{ new['description'] }}</p>
+                        <p id="provider">{{ new['provider'][0]['name'].upper() }}</p>
+                    {% endif %}
                 </section>
             {% endfor %}
         </div>

@@ -26,14 +26,6 @@
     </head>
 
     <body>
-        {% if get_flashed_messages() %}
-            <header>
-                <div class="alert alert-primary mb-0 text-center" role="alert">
-                    {{ get_flashed_messages() | join(" ") }}
-                </div>
-            </header>
-        {% endif %}
-
         <nav class="navbar navbar-expand-md navbar-light" id = "nav">
             <div class="container-fluid">
                 <a class="nav-link" href="/"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-activity" viewBox="0 0 16 16">
@@ -58,6 +50,14 @@
             </div>
         </nav>
 
+        {% if get_flashed_messages() %}
+            <header>
+                <div class="alert alert-warning  mb-0 text-center" role="alert">
+                    {{ get_flashed_messages() | join(" ") }}
+                </div>
+            </header>
+        {% endif %}
+        
         <div class="container">
             <main> 
                 <section>

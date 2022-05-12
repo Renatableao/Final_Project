@@ -37,9 +37,10 @@ def index():
 	if request.method == "POST":
 	
 		# Ensure language is provided
-		if not request.form.get("input_language"):
-			return apology("Must provide language", 400)
-
+		if request.form.get("input_language") == "language":
+			flash("Please select language!")
+			return redirect("/")
+		
 		# Ensure category is provided
 		if not request.form.get("input_category"):
 			return apology("Must provide category", 400)
