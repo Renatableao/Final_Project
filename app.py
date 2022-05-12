@@ -41,18 +41,26 @@ def index():
 			flash("Please select language!")
 			return redirect("/")
 		
-		# Ensure category is provided
+		# Ensure category topic is provided
 		if not request.form.get("input_category"):
-			return apology("Must provide category", 400)
+			flash("Please type in a search topic!")
+			return redirect("/")
 
+		# Call API results with given parameters 
 		else:	
 			country = request.form.get("input_language")
 			category = request.form.get("input_category")
 
 			news_result = search(country, category)
-			
 
-			return render_template("news.html", news_result=news_result, category=category)
+			#If results equal none
+			if not news_result:
+				flash("No results on this topic. Try anther one!")
+				return redirect("/")
+			
+			#If valid results
+			else:
+				return render_template("news.html", news_result=news_result, category=category)
 
 	# User reached route via GET
 	else:

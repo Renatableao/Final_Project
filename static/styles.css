@@ -6,10 +6,7 @@
   text-decoration: none;
 }
 
-.alert {
-  font-size: 0.9rem;
-  color: black;
-}
+
 
 html {
   height: 100vh;
@@ -21,12 +18,20 @@ html {
   font-size: 0.8rem;
 }
 
+.nav-link:hover {
+  color: black;
+}
+
 #nav {  
   position: relative;
   font-size: 0.9rem;
   color: black;
 }
 
+.alert {
+  font-size: 0.9rem;
+  color: black;
+}
 
 /*Body*/
 body {
@@ -45,11 +50,6 @@ main {
 }
 
 /*Body section*/
-.results {
-  display: flex;
-  flex-direction: column;
-}
-
 .selected_category {
   position: relative;
 }
@@ -62,19 +62,13 @@ main {
 }
 
 /*Main title*/
-.title {
-  display: flex;
-  flex-direction: column;
-}
-
 .title span {
   text-align: center;
   color: white;
   font-size: 1.8rem;
 }
 
-.newstitle
-{
+.newstitle {
   margin-top: 3.5rem;
   font-size: 11rem;
   font-weight: bold;
@@ -84,18 +78,41 @@ main {
 }
 
 /*Search parameters*/
-.select
-{
+#input_category {
+  background-color: transparent;
+  border: none;
+  height: 2rem;
+  width: 8rem;
+}
+  
+#input_category::placeholder { 
+  color: #5c5c5c;
+}
+
+#input_category:focus {
+  outline: none;
+}
+
+#input_category:-webkit-autofill:focus {
+  -webkit-text-fill-color: black;
+  transition: background-color 5000s ease-in-out 0s;
+} 
+
+#input_category:-webkit-autofill {
+  -webkit-text-fill-color: black;
+  transition: background-color 5000s ease-in-out 0s;
+} 
+
+.select{
   position: absolute;
-  margin-left: 47.9rem;
-  margin-top: 2rem;
+  margin-left: 45rem;
+  margin-top: 2.5rem;
 }
 
 .search_param { 
-  width:15rem;
-  height:auto;
   background:#ffd000;
   display: flex;
+  align-items: center;
   justify-content: center;
   gap: 1rem;
 }
@@ -169,8 +186,6 @@ li > a:only-child:after { content: ''; }
 
 /*Search button*/
 #submit {
-  margin-top: 0.8rem;
-  margin-left: 0.5rem;
   height: 1.8rem;
   font-size: 0.9rem;
   border-radius: 0.2rem;
@@ -187,6 +202,11 @@ li > a:only-child:after { content: ''; }
 }
 
 /*List of search results*/
+.results {
+  display: flex;
+  flex-direction: column;
+} 
+
 .box_list {
   position: relative;
   margin: 23rem auto 0 auto;

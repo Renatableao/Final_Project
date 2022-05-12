@@ -29,7 +29,7 @@
     <div class="section">
         <div class="title">
             {% if not session["user_id"] %}
-                <p class="newstitle">news<span>{{ category }}</span></p>
+                <p class="newstitle">news<span>{{ category[0]|upper}}{{category[1:]|lower }}</span></p>
             {% endif %}
         </div>
     
@@ -47,17 +47,7 @@
                     </ul>
                 </li>
             </ul>
-            <input type="hidden" id="input_category" name = "input_category" value="category">
-            <ul>
-                <li><a id= "select_category" href="#">Category</a>
-                    <ul>
-                        <li><a class ="category" name="Business" href="#" onclick="func_select_categ(this)">Business</a></li>
-                        <li><a class ="category" name="Entertainment" href="#" onclick="func_select_categ(this)">Entertainment</a></li>
-                        <li><a class ="category" name="Sports" href="#" onclick="func_select_categ(this)">Sports</a></li>
-                        <li><a class ="category" name="World" href="#" onclick="func_select_categ(this)">World</a></li>
-                    </ul>
-                </li>
-            </ul>
+            <input type="text" id="input_category" name = "input_category" value="" placeholder = "Type in topic »">
             <button class="btn btn-primary" id="submit" type="submit">Search</button>
         </nav> 
     </form>
@@ -67,17 +57,17 @@
 
 {% block results %}
     <form action="/" method="post" class="box_list">
-        <div class= "news_list">
+        <div class= "news_list">   
             {% for new in news_result %}
                 <section class="new_container">
                     {% if new['image'] %}
                         <img src ="{{ new['image']['contentUrl'] }}"></img>
                         <a href="{{ new['url'] }}">{{ new["name"] }}</a>
-                        <p id="provider">{{ new['provider'][0]['name'].upper() }}</p>
+                        <p id="provider">{{ new['provider'][0]['name']|upper }}</p>
                     {% else %}
                         <a href="{{ new['url'] }}">{{ new["name"] }}</a>
                         <p id="description">{{ new['description'] }}</p>
-                        <p id="provider">{{ new['provider'][0]['name'].upper() }}</p>
+                        <p id="provider">{{ new['provider'][0]['name']|upper }}</p>
                     {% endif %}
                 </section>
             {% endfor %}
