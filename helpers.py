@@ -4,11 +4,11 @@ import requests
 from flask import redirect, render_template, request, session
 from functools import wraps
 
-def search(language, category):
+def search(country, category):
     # Contact API
 	try:
 		url = "https://bing-news-search1.p.rapidapi.com/news"
-		querystring = {"category": category, "cc": language ,"safeSearch":"Off","textFormat":"Raw"}
+		querystring = {"category": category, "cc": country ,"safeSearch":"Off","textFormat":"Raw"}
 
 		headers = {
 			"Accept-Language": "english;portuguese;french;chinese;italian",

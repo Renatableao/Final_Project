@@ -2,7 +2,7 @@
 
 {% block script %} 
   <script type="text/javascript">
-    function myfunc_language( thisObj )
+    function func_select_lan( thisObj )
     {
       var clicked_name = thisObj.name;
       var clicked_text = thisObj.innerText;
@@ -10,7 +10,7 @@
       document.getElementById("input_language").value= clicked_name
     }
 
-    function myfunc_category( thisObj )
+    function func_select_categ( thisObj )
     {
       var clicked_name = thisObj.name;
       var clicked_text = thisObj.innerText;
@@ -18,58 +18,63 @@
       document.getElementById("input_category").value= clicked_name
     }
   </script>
+
 {% endblock %}
 
 {% block title %}
     News List
 {% endblock %}
 
-
 {% block section %}
-  {% if not session["user_id"] %}
-    <p class="newstitle">news</p>
-  {% endif %}
+    <div class="section">
+        <div class="title">
+            {% if not session["user_id"] %}
+                <p class="newstitle">news<span>{{ category }}</span></p>
+            {% endif %}
+        </div>
     
-  <form action="/" method="post">
-    <nav class="search_param">
-        <input type="hidden" id="input_language" name ="input_language" value="language">
-        <ul>
-          <li><a id="select_language" href="#">Language</a>
+    <form action="/" method="post" class="select" >
+        <nav class="search_param">
+            <input type="hidden" id="input_language" name ="input_language" value="language">
             <ul>
-              <li><a class ="language" name="US" href="#" onclick="myfunc_language(this)">English</a></li>
-              <li><a class ="language" name="BR" href="#" onclick="myfunc_language(this)">Portuguese</a></li>
-              <li><a class ="language" name="FR" href="#" onclick="myfunc_language(this)">French</a></li>
-              <li><a class ="language" name="IT" href="#" onclick="myfunc_language(this)">Italian</a></li>
-              <li><a class ="language" name="CN" href="#" onclick="myfunc_language(this)">Chinese</a></li>
+                <li><a id="select_language" href="#">Language</a>
+                    <ul>
+                        <li><a class ="language" name="US" href="#" onclick="func_select_lan(this)">English</a></li>
+                        <li><a class ="language" name="BR" href="#" onclick="func_select_lan(this)">Portuguese</a></li>
+                        <li><a class ="language" name="FR" href="#" onclick="func_select_lan(this)">French</a></li>
+                        <li><a class ="language" name="IT" href="#" onclick="func_select_lan(this)">Italian</a></li>
+                        <li><a class ="language" name="CN" href="#" onclick="func_select_lan(this)">Chinese</a></li>
+                    </ul>
+                </li>
             </ul>
-          </li>
-        </ul>
-        <input type="hidden" id="input_category" name = "input_category" value="category">
-        <ul>
-          <li><a id= "select_category" href="#">Category</a>
+            <input type="hidden" id="input_category" name = "input_category" value="category">
             <ul>
-              <li><a class ="category" name="business" href="#" onclick="myfunc_category(this)">Business</a></li>
-              <li><a class ="category" name="entertainment" href="#" onclick="myfunc_category(this)">Entertainment</a></li>
-              <li><a class ="category" name="sports" href="#" onclick="myfunc_category(this)">Sports</a></li>
-              <li><a class ="category" name="world" href="#" onclick="myfunc_category(this)">World</a></li>
+                <li><a id= "select_category" href="#">Category</a>
+                    <ul>
+                        <li><a class ="category" name="Business" href="#" onclick="func_select_categ(this)">Business</a></li>
+                        <li><a class ="category" name="Entertainment" href="#" onclick="func_select_categ(this)">Entertainment</a></li>
+                        <li><a class ="category" name="Sports" href="#" onclick="func_select_categ(this)">Sports</a></li>
+                        <li><a class ="category" name="World" href="#" onclick="func_select_categ(this)">World</a></li>
+                    </ul>
+                </li>
             </ul>
-          </li>
-        </ul>
-        <button class="btn btn-primary" id="submit" type="submit">Search</button>
-      </nav> 
+            <button class="btn btn-primary" id="submit" type="submit">Search</button>
+        </nav> 
     </form>
+    </div>
 {% endblock %}
 
 
-{% block main %}
-    <form action="/" method="post" class="news_list">
-    <div class= "container">
-        {% for new in news_result %}
-            <section>
-                <span><img src= "{{ new['provider'][0]['image']['thumbnail']['contentUrl'] }}"></img></span><a href="{{ new['url'] }}">{{ new["name"] }}</a>
-                <p>{{ new["description"] }}</p>
-            </section>
-        {% endfor %}
-    </div>
+{% block results %}
+    <form action="/" method="post" class="box_list">
+        <div class= "news_list">
+            {% for new in news_result %}
+                <section class="new_container">
+                    <a href="{{ new['url'] }}">{{ new["name"] }}</a>
+                    <p>{{ new["description"] }}</p>
+                    <span><img src= "{{ new['provider'][0]['image']['thumbnail']['contentUrl'] }}"></img></span>
+                </section>
+            {% endfor %}
+        </div>
     </form>
 {% endblock %}

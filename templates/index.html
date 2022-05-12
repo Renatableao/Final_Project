@@ -26,11 +26,12 @@
 {% endblock %}
 
 {% block section %}
+<div class="section">
   {% if not session["user_id"] %}
     <p class="newstitle">news</p>
   {% endif %}
-    
-  <form action="/" method="post">
+
+  <form action="/" method="post" class="select">
     <nav class="search_param">
         <input type="hidden" id="input_language" name ="input_language" value="language">
         <ul>
@@ -48,14 +49,15 @@
         <ul>
           <li><a id= "select_category" href="#">Category</a>
             <ul>
-              <li><a class ="category" name="business" href="#" onclick="myfunc_category(this)">Business</a></li>
-              <li><a class ="category" name="entertainment" href="#" onclick="myfunc_category(this)">Entertainment</a></li>
-              <li><a class ="category" name="sports" href="#" onclick="myfunc_category(this)">Sports</a></li>
-              <li><a class ="category" name="world" href="#" onclick="myfunc_category(this)">World</a></li>
+              <li><a class ="category" name="Business" href="#" onclick="myfunc_category(this)">Business</a></li>
+              <li><a class ="category" name="Entertainment" href="#" onclick="myfunc_category(this)">Entertainment</a></li>
+              <li><a class ="category" name="Sports" href="#" onclick="myfunc_category(this)">Sports</a></li>
+              <li><a class ="category" name="World" href="#" onclick="myfunc_category(this)">World</a></li>
             </ul>
           </li>
         </ul>
         <button class="btn btn-primary" id="submit" type="submit">Search</button>
       </nav> 
     </form>
+</div>
 {% endblock %}
