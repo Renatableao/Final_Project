@@ -9,7 +9,7 @@ def search(country, category):
 	try:
 		url = "https://bing-news-search1.p.rapidapi.com/news/search"
 
-		querystring = {"q": category,"sortBy":"date","cc": country,"freshness":"Month","originalImg":"true","textFormat":"Raw","safeSearch":"Strict"}
+		querystring = {"q": category, "count":"30", "sortBy":"date","cc": country,"freshness":"Month","originalImg":"true","textFormat":"Raw","safeSearch":"Strict"}
 
 		headers = {
 				"X-BingApis-SDK": "true",

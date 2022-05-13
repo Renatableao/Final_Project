@@ -65,7 +65,7 @@
                         <a href="{{ new['url'] }}">{{ new["name"] }}</a>
                         <p id="provider">{{ new['provider'][0]['name']|upper }}</p>
                     {% else %}
-                        <a href="{{ new['url'] }}">{{ new["name"] }}</a>
+                        <a class="no-img" href="{{ new['url'] }}">{{ new["name"] }}</a>
                         <p id="description">{{ new['description'] }}</p>
                         <p id="provider">{{ new['provider'][0]['name']|upper }}</p>
                     {% endif %}
