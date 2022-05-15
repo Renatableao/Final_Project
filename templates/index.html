@@ -27,9 +27,7 @@
 
 {% block section %}
 <div class="section">
-  {% if not session["user_id"] %}
     <p class="newstitle">news</p>
-  {% endif %}
 
   <form action="/" method="post" class="select">
     <nav class="search_param">

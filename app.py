@@ -66,6 +66,43 @@ def index():
 	else:
 		return render_template("index.html")
 
+@app.route("/mylist", methods=["GET", "POST"])
+def my_list():
+	
+	# User reached route via POST (as by submitting a form via POST)
+	if request.method == "POST":
+		
+		# Ensure language is provided
+		if request.form.get("input_filter") == "filter":
+			flash("Please select category!")
+			return redirect("/my_list")
+
+		else:
+			# Get input from user for filtered category
+			filter_category = request.form.get("input_filter")
+
+			# Query database for users news list categories
+			my_news_categories = db.execute("SELECT DISTINCT category FROM user_news WHERE user_id = ?", [session.get("user_id")])
+			my_categories = my_news_categories.fetchall()
+
+			# Query database for users news list
+			my_category_filter = db.execute("SELECT * FROM user_news WHERE user_id = ? AND category = ?", [session.get("user_id"), filter_category])
+			my_category = my_category_filter.fetchall()
+		
+		return render_template("my_list_filtered.html", my_categories=my_categories, my_category=my_category, filter_category=filter_category)
+	
+	else:
+
+		# Query database for users news list
+		user_list = db.execute("SELECT * FROM user_news WHERE user_id = ?", [session.get("user_id")])
+		user_news = user_list.fetchall()
+
+		# Query database for users news list categories
+		my_category = db.execute("SELECT DISTINCT category FROM user_news WHERE user_id = ?", [session.get("user_id")])
+		my_categories = my_category.fetchall()
+
+		return render_template("my_list.html", user_news=user_news, my_categories=my_categories)
+
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -73,51 +110,29 @@ def register():
 	# User reached route via POST (as by submitting a form via POST)
 	if request.method == "POST":
 
-		# Ensure username was submitted
-		if not request.form.get("username"):
-			return apology("Must provide username", 400)
+			# Query database for username
+			user = db.execute("SELECT * FROM users WHERE username = ?", [request.form.get("username")])
+			user_l = user.fetchall()
 
-		# Ennsure username has at least 3 characters and not only numbers
-		elif len(request.form.get("username")) < 3 or re.match('[0-9]', request.form.get("username")):
-			return apology("Must provide valid username", 400)
+			# Ensure username is not already used
+			if len(user_l) == 1:
+				flash("User already exists! Please try another one.")
+				return render_template("register.html")
 
-		# Ensure password was submitted
-		elif not request.form.get("password"):
-			return apology("Must provide password", 400)
+			hash = generate_password_hash(request.form.get("password"))
 
-		# Ensure password has at least 6 characters and contain lowercase letters, numbers and special characters
-		elif re.match('^(.{0,5}|[^0-9]*|[^a-z]*|[a-zA-Z0-9]*)$', request.form.get("password")):
-			return apology("Must provide valid password", 400)
+			db.execute("INSERT INTO users(username, hash) VALUES (?, ?)", [(request.form.get("username")) , hash])
+			con.commit()
 
-		# Ensure password confirmation was submitted
-		elif not request.form.get("confirmation"):
-			return apology("Must confirm password", 400)
+			# Remember which user has logged in
+			user = db.execute("SELECT * FROM users WHERE username = ?", [request.form.get("username")])
+			user_l = user.fetchall()
+			session["user_id"] = user_l[0][0]
+			session["user_username"] = user_l[0][1]
 
-		# Ensure password confirmation is the same as password
-		elif request.form.get("confirmation") != request.form.get("password"):
-			return apology("Passwords do not match", 400)
-
-		# Query database for username
-		user = db.execute("SELECT * FROM users WHERE username = ?", [request.form.get("username")])
-		user_l = user.fetchall()
-
-		# Ensure username is not already used
-		if len(user_l) == 1:
-			return apology("Username already in use", 400)
-
-		hash = generate_password_hash(request.form.get("password"))
-
-		db.execute("INSERT INTO users(username, hash) VALUES (?, ?)", [(request.form.get("username")) , hash])
-		con.commit()
-
-		# Remember which user has logged in
-		user = db.execute("SELECT * FROM users WHERE username = ?", [request.form.get("username")])
-		user_l = user.fetchall()
-		session["user_id"] = user_l[0][0]
-
-		# Redirect user to home page
-		flash("Registered!")
-		return redirect("/")
+			# Redirect user to home page
+			flash("Registered!")
+			return redirect("/my_list")
 
 	# User reached route via GET (as by clicking a link or via redirect)
 	else:
@@ -133,27 +148,21 @@ def login():
 	# User reached route via POST (as by submitting a form via POST)
 	if request.method == "POST":
 
-		# Ensure username was submitted
-		if not request.form.get("username"):
-			return apology("must provide username", 403)
-
-		# Ensure password was submitted
-		elif not request.form.get("password"):
-			return apology("must provide password", 403)
-
 		# Query database for username
 		user = db.execute("SELECT * FROM users WHERE username = ?", [request.form.get("username")])
 		user_l = user.fetchall()
 
 		# Ensure username exists and password is correct
 		if len(user_l) != 1 or not check_password_hash(user_l[0][2], request.form.get("password")):
-			return apology("invalid username and/or password", 403)
+			flash("Invalid username and/or password!")
+			return render_template("login.html")
 
 		# Remember which user has logged in
 		session["user_id"] = user_l[0][0]
+		session["user_username"] = user_l[0][1]
 
 		# Redirect user to home page
-		return redirect("/")
+		return redirect("/mylist")
 
 	# User reached route via GET (as by clicking a link or via redirect)
 	else:

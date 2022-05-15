@@ -19,12 +19,17 @@ html {
   scroll-behavior: smooth;
 }
 
-input {
-  caret-color: var(--first_color);
-}
 /*Navigation Menu*/
 .nav-link {
   color: var(--second_color);
+  font-size: 0.9rem;
+}
+
+#hello_user {
+  cursor:default;
+}
+
+i {
   font-size: 0.8rem;
 }
 
@@ -60,6 +65,55 @@ main {
   padding-bottom: 50px;
 }
 
+/*Register*/
+.register {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.register h1 {
+  margin-bottom: 1rem;
+}
+
+.register input::placeholder {
+  color: var(--c, #6c767f);
+}
+
+.error {
+  animation: shake 300ms;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.login h1 {
+  margin-bottom: 1rem;
+}
+
+.login p {
+  font-size: 0.8rem;
+}
+
+.login span a{
+  color: var(--fourth_color);
+}
+
+@keyframes shake {
+ 25% { transform: translateX(4px) }
+ 50% { transform: translateX(-4px) }
+ 75% { transform: translateX(4px) }
+}
+
 .container {
   min-height: 100%;
 }
@@ -92,12 +146,18 @@ main {
   color: var(--second_color);
 }
 
+#my {
+  font-size: 5rem;
+  color: var(--second_color);
+}
+
 /*Search parameters*/
 #input_category {
   background-color: transparent;
   border: none;
   height: 2rem;
   width: 8rem;
+  caret-color: var(--first_color);
 }
   
 #input_category::placeholder { 
@@ -216,12 +276,94 @@ li > a:only-child:after { content: ''; }
   color: var(--first_color); 
 }
 
+
+/*Filter parameters*/
+.filter_select{
+  position: absolute;
+  margin-left: 49rem;
+  margin-top: 2.5rem;
+}
+
+.filter_param { 
+  background:var(--third_color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+  
+.filter_param ul {
+  padding:0;
+  width: 100%;
+  list-style-type:none;
+  text-align: center;
+  font-size: 1rem;
+  margin: 0;
+}
+  
+.filter_param ul li {
+  position:relative;
+  width: 100%;
+  margin:0 1rem 0 0;
+  display:inline-block;   
+}
+  
+li > a:after { content: ' »'; }
+  
+li > a:only-child:after { content: ''; }
+  
+#select_filter_category {
+  color: var(--first_color);
+  width: 10rem;
+  letter-spacing: 0.05rem;
+}
+
+#select_filter_category:hover {
+  color: var(--first_color);
+}
+
+/*Dropdwon Menu*/
+.filter_param ul li a {
+  padding:1rem;
+  display:inline-block;
+  text-decoration:none; 
+}
+
+.filter_param ul li ul {
+  display:none;
+  position:absolute;
+  left:0;
+  background:var(--third_color);
+  float:left;
+  border-top: 0.1px solid var(--second_color);
+}
+
+.filter_category {
+  color: var(--second_color);
+  font-size: 0.8rem;
+}
+
+.filter_category:hover {
+  opacity: 20%;
+}
+
+.filter_param ul li ul li {
+  width:100%;
+  border-bottom:0.1px dashed var(--second_color);
+}
+  
+.filter_param ul li ul li:last-child {
+  width:100%;
+  border-bottom:none;
+}
+
+.filter_param ul li:hover ul {
+    display:block;
+}
+
 /*List of search results*/
-
-
 .box_list {
   margin: 23rem 0 0 0;
-  
   border-radius: 6px;
 }
 
@@ -244,6 +386,7 @@ li > a:only-child:after { content: ''; }
 .no-img {
   margin-top: 3rem;
 }
+
 .new_container a {
   text-decoration: none;
   color: var(--second_color);
@@ -259,13 +402,13 @@ li > a:only-child:after { content: ''; }
 
 #description {
   font-size: 0.9rem;
-  text-align: justify;
-  padding: 1rem;
+  text-align: center;
+  padding: 0 2rem;
+  
 }
 
 #provider {
-  font-size: 0.6rem;
-  
+  font-size: 0.6rem; 
 }
 
 .new_container img {
@@ -274,6 +417,46 @@ li > a:only-child:after { content: ''; }
   max-height: 70%;
   border-radius: 0.2rem 0.2rem 0 0;
 }
+
+/*User list*/
+.my_list {
+  margin: 23rem 0 0 0;
+  border-radius: 6px;
+}
+
+.my_news_list {
+  display: flex;
+  flex-direction: column;
+}
+
+.my_new_container {
+  height: 9rem;
+  background-color: var(--first_color);
+  border-radius: 0.2rem;
+  display: flex;
+  flex-direction: row;
+}
+
+.my_news_list img {
+  height: 100%;
+}
+
+.my_new_container a {
+  text-decoration: none;
+  color: var(--second_color);
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+  padding: 1rem;
+}
+
+.my_news_txt {
+  display: flex;
+  flex-direction: column;
+  align-items:center;
+  justify-content: space-between;
+}
+
 
 /*Footer*/
 footer {

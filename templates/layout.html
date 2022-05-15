@@ -12,8 +12,12 @@
                 integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" rel="stylesheet">
         <script crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"      
                 integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"></script>
+        
     
         <link href="/static/styles.css" rel="stylesheet">
+
+        <!-- Bootstrap icons -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"/>
 
         <!--Google Font-->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,6 +42,8 @@
                 <div class="collapse navbar-collapse" id="navbar">
                     {% if session["user_id"] %}
                         <ul class="navbar-nav ms-auto mt-2">
+                            <li class="nav-item"><a class="nav-link" id="hello_user" href="#">Hello, {{ session["user_username"] }}!</li></a>
+                            <li class="nav-item"><a class="nav-link" id="favorites" href="/mylist"><i class="bi bi-heart-fill"></i></li></a>
                             <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
                         </ul> 
                     {% else %}
@@ -60,10 +66,9 @@
         
         <div class="container">
             <main> 
-                <section>
+                
                     {% block section %}{% endblock %}
-                    {% block script %} {% endblock %}
-                </section>  
+                    {% block script %} {% endblock %} 
         
                 <section class="results">
                     {% block results %}{% endblock %}
