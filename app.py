@@ -53,6 +53,7 @@ def index():
 
 			news_result = search(country, category)
 
+
 			#If results equal none
 			if not news_result:
 				flash("No results on this topic. Try anther one!")
@@ -130,9 +131,9 @@ def register():
 			session["user_id"] = user_l[0][0]
 			session["user_username"] = user_l[0][1]
 
-			# Redirect user to home page
+			# Redirect user to favorites
 			flash("Registered!")
-			return redirect("/my_list")
+			return redirect("/mylist")
 
 	# User reached route via GET (as by clicking a link or via redirect)
 	else:
@@ -161,7 +162,7 @@ def login():
 		session["user_id"] = user_l[0][0]
 		session["user_username"] = user_l[0][1]
 
-		# Redirect user to home page
+		# Redirect user to favorites
 		return redirect("/mylist")
 
 	# User reached route via GET (as by clicking a link or via redirect)

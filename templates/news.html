@@ -30,7 +30,6 @@
         <div class="title">
                 <p class="newstitle">news<span>{{ category[0]|upper}}{{category[1:]|lower }}</span></p>
         </div>
-    
     <form action="/" method="post" class="select" >
         <nav class="search_param">
             <input type="hidden" id="input_language" name ="input_language" value="language">
@@ -62,11 +61,16 @@
                         <img src ="{{ new['image']['contentUrl'] }}"></img>
                         <a href="{{ new['url'] }}">{{ new["name"] }}</a>
                         <p id="provider">{{ new['provider'][0]['name']|upper }}</p>
+                          
                     {% else %}
                         <a class="no-img" href="{{ new['url'] }}">{{ new["name"] }}</a>
                         <p id="description">{{ new['description'] }}</p>
                         <p id="provider">{{ new['provider'][0]['name']|upper }}</p>
                     {% endif %}
+                    <div class="new_icons">
+                        <i class="bi bi-heart-fill" id="favorite" name="favorite" title="Save as favorite"></i>
+                        <i class="bi bi-share-fill" title="Share"></i>
+                    </div>
                 </section>
             {% endfor %}
         </div>

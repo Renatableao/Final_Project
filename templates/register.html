@@ -13,7 +13,9 @@
             thisObj.classList.add('error')
         }
         else
+        {
             thisObj.style.border = "none"
+        }
     }
 
     function check_password( thisObj )
@@ -27,7 +29,9 @@
             thisObj.classList.add('error')
         }
         else
+        {
             thisObj.style.border = "none"
+        }
     }
 
     function check_password_conf( thisObj )
@@ -42,9 +46,12 @@
             thisObj.classList.add('error')
         }
         else
+        {
             thisObj.style.border = "none"
             document.getElementById("submit").disabled = false
+        }
     }
+ 
 </script>
 {% endblock %}
 

@@ -108,6 +108,20 @@ main {
   color: var(--fourth_color);
 }
 
+.pass_field {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
+  margin-left: 1.5rem;
+}
+
+.pass_field i {
+  font-size: 1rem;
+  color: var(--first_color)
+}
+
+
 @keyframes shake {
  25% { transform: translateX(4px) }
  50% { transform: translateX(-4px) }
@@ -379,8 +393,40 @@ li > a:only-child:after { content: ''; }
   border-radius: 0.2rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
+  position: relative;
+  justify-content: space-between;
+}
+
+.new_icons {
+  margin-bottom: 1rem;
+  position: absolute; 
+  margin-top: 23rem;
+  margin-left: 18rem;
+  cursor:pointer;
+}
+
+.new_icons i {
+  margin-right: 0.2rem;
+  color: var(--fourth_color);
+}
+
+.bi-heart-fill:hover {
+  color: var(--second_color);
+  animation: size 0.5s infinite 0.5s;
+}
+
+.bi-share-fill:hover {
+  color: var(--second_color);
+  animation: size 0.5s;
+}
+
+@keyframes size {
+  0% { font-size: 0.8rem;}
+  25% { font-size: 0.85rem;}
+  50% { font-size: 0.9rem;}
+  75% { font-size: 0.95rem;}
+  100% { font-size: 1rem;}
 }
 
 .no-img {
@@ -409,12 +455,13 @@ li > a:only-child:after { content: ''; }
 
 #provider {
   font-size: 0.6rem; 
+  padding: 0.5rem;
 }
 
 .new_container img {
   width: 100%;
   height: auto;
-  max-height: 70%;
+  max-height: 60%;
   border-radius: 0.2rem 0.2rem 0 0;
 }
 

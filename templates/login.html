@@ -13,7 +13,9 @@
             thisObj.classList.add('error')
         }
         else
+        {
             thisObj.style.border = "none"
+        }
     }
 
     function check_password( thisObj )
@@ -27,7 +29,23 @@
             thisObj.classList.add('error')
         }
         else
+        {
             thisObj.style.border = "none"
+        }
+    }
+
+    function password_visible( thisObj )
+    {   
+        if (thisObj.classList.contains("bi-eye"))
+        {
+            document.getElementById("log_password").type = "text"
+            thisObj.classList.replace("bi-eye", "bi-eye-slash")
+        }
+        else
+        {
+            document.getElementById("log_password").type = "password"
+            thisObj.classList.replace("bi-eye-slash", "bi-eye")
+        }
     }
 
 </script>
@@ -43,8 +61,9 @@
         <div class="mb-3">
             <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="log_username" name="username" placeholder="Username" type="text" pattern="[a-zA-Z].{3,}" onchange="check_username(this)">
         </div>
-        <div class="mb-3">
+        <div class="mb-3 pass_field">
             <input class="form-control mx-auto w-auto" id="log_password" name="password" placeholder="Password" type="password">
+            <i class="bi bi-eye" onclick="password_visible(this)"></i>
         </div>
         <button class="btn btn-primary" id="submit" type="submit">Log In</button>
         <p>Not Registered? <span><a href="/register">Sign Up Here</a></p></span>
