@@ -40,7 +40,7 @@ def index():
 			news_data = db.execute("SELECT * FROM news WHERE name = ?", [request.form.get("favorite")])
 			new_data = news_data.fetchall()
 			
-			db.execute("INSERT OR IGNORE INTO user_news(user_id, category, name, url, description, provider, date) VALUES (?, ?, ?, ?, ?, ?, ?)", [session.get("user_id"), new_data[0][1], new_data[0][2], new_data[0][3], new_data[0][4], new_data[0][5], new_data[0][6]])
+			db.execute("INSERT INTO user_news(user_id, category, name, url, description, provider, date) SELECT ?, ?, ?, ?, ?, ?, ? WHERE NOT EXISTS (SELECT 1 FROM user_news WHERE name = ? AND user_id = ?)", [session.get("user_id"), new_data[0][1], new_data[0][2], new_data[0][3], new_data[0][4], new_data[0][5], new_data[0][6], new_data[0][2], session.get("user_id")])
 			con.commit()
 			return ('', 204)
 
@@ -87,25 +87,32 @@ def my_list():
 	# User reached route via POST (as by submitting a form via POST)
 	if request.method == "POST":
 		
-		# Ensure language is provided
-		if request.form.get("input_filter") == "filter":
-			flash("Please select category!")
+
+		if request.form.get("delete"):
+			db.execute("DELETE FROM user_news WHERE name = ? AND user_id = ?", [request.form.get("delete"), session.get("user_id")])
+			con.commit()
 			return redirect("/mylist")
 
-		else:
-			# Get input from user for filtered category
-			filter_category = request.form.get("input_filter")
-			print(filter_category)
-
-			# Query database for users news list categories
-			my_news_categories = db.execute("SELECT DISTINCT category FROM user_news WHERE user_id = ?", [session.get("user_id")])
-			my_categories = my_news_categories.fetchall()
-
-			# Query database for users news list
-			my_category_filter = db.execute("SELECT * FROM user_news WHERE user_id = ? AND category = ?", [session.get("user_id"), filter_category])
-			my_category = my_category_filter.fetchall()
 		
-		return render_template("my_list_filtered.html", my_categories=my_categories, my_category=my_category, filter_category=filter_category)
+		else:
+			# Ensure language is provided
+			if request.form.get("input_filter") == "filter":
+				flash("Please select category!")
+				return redirect("/mylist")
+
+			else:
+				# Get input from user for filtered category
+				filter_category = request.form.get("input_filter")
+
+				# Query database for users news list categories
+				my_news_categories = db.execute("SELECT DISTINCT category FROM user_news WHERE user_id = ?", [session.get("user_id")])
+				my_categories = my_news_categories.fetchall()
+
+				# Query database for users news list
+				my_category_filter = db.execute("SELECT * FROM user_news WHERE user_id = ? AND category = ?", [session.get("user_id"), filter_category])
+				my_category = my_category_filter.fetchall()
+		
+			return render_template("my_list_filtered.html", my_categories=my_categories, my_category=my_category, filter_category=filter_category)
 	
 	else:
 

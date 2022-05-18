@@ -52,10 +52,12 @@
                             <p class="date">{{ new['datePublished'][0:10] }}</p>
                         </div>
                     {% endif %}
+                    {% if session["user_id"] %}
                     <div class="new_icons">
-                        <button class="favorite" name="favorite" ondblclick="favorite(this)" value="{{ new['name'] }}"><i class="bi bi-heart-fill" title="Save as favorite" onclick="redheart(this)"></i></button>
+                        <button class="favorite" name="favorite" value="{{ new['name'] }}"><i class="bi bi-heart-fill" title="Save as favorite" onclick="redheart(this)"></i></button>
                         <i class="bi bi-share-fill" id="share" name="share" title="Share"></i>
                     </div>
+                    {% endif %}
                 </section>
             {% endfor %}
         </div>
