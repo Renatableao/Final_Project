@@ -1,25 +1,5 @@
 {% extends "layout.html" %}
 
-{% block script %} 
-  <script type="text/javascript">
-    function myfunc_language( thisObj )
-    {
-      var clicked_name = thisObj.name;
-      var clicked_text = thisObj.innerText;
-      document.getElementById("select_language").innerHTML = clicked_text
-      document.getElementById("input_language").value= clicked_name
-    }
-
-    function myfunc_category( thisObj )
-    {
-      var clicked_name = thisObj.name;
-      var clicked_text = thisObj.innerText;
-      document.getElementById("select_category").innerHTML = clicked_text 
-      document.getElementById("input_category").value= clicked_name
-    }
-  </script>
-{% endblock %}
-
 
 {% block title %}
     Search News
@@ -35,11 +15,11 @@
         <ul>
           <li><a id="select_language" href="#">Language</a>
             <ul>
-              <li><a class ="language" name="US" href="#" onclick="myfunc_language(this)">English</a></li>
-              <li><a class ="language" name="BR" href="#" onclick="myfunc_language(this)">Portuguese</a></li>
-              <li><a class ="language" name="FR" href="#" onclick="myfunc_language(this)">French</a></li>
-              <li><a class ="language" name="IT" href="#" onclick="myfunc_language(this)">Italian</a></li>
-              <li><a class ="language" name="CN" href="#" onclick="myfunc_language(this)">Chinese</a></li>
+              <li><a class ="language" name="US" href="#" onclick="select_language(this)">English</a></li>
+              <li><a class ="language" name="BR" href="#" onclick="select_language(this)">Portuguese</a></li>
+              <li><a class ="language" name="FR" href="#" onclick="select_language(this)">French</a></li>
+              <li><a class ="language" name="IT" href="#" onclick="select_language(this)">Italian</a></li>
+              <li><a class ="language" name="CN" href="#" onclick="select_language(this)">Chinese</a></li>
             </ul>
           </li>
         </ul>

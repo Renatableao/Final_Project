@@ -5,7 +5,7 @@ from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import search, apology
+from helpers import login_required, search
 # Configure application
 app = Flask(__name__)
 
@@ -35,39 +35,53 @@ def index():
 	
 	# User reached route via POST
 	if request.method == "POST":
-	
-		# Ensure language is provided
-		if request.form.get("input_language") == "language":
-			flash("Please select language!")
-			return redirect("/")
-		
-		# Ensure category topic is provided
-		if not request.form.get("input_category"):
-			flash("Please type in a search topic!")
-			return redirect("/")
 
-		# Call API results with given parameters 
-		else:	
-			country = request.form.get("input_language")
-			category = request.form.get("input_category")
-
-			news_result = search(country, category)
-
-
-			#If results equal none
-			if not news_result:
-				flash("No results on this topic. Try anther one!")
-				return redirect("/")
+		if request.form.get("favorite"):
+			news_data = db.execute("SELECT * FROM news WHERE name = ?", [request.form.get("favorite")])
+			new_data = news_data.fetchall()
 			
-			#If valid results
-			else:
-				return render_template("news.html", news_result=news_result, category=category)
+			db.execute("INSERT OR IGNORE INTO user_news(user_id, category, name, url, description, provider, date) VALUES (?, ?, ?, ?, ?, ?, ?)", [session.get("user_id"), new_data[0][1], new_data[0][2], new_data[0][3], new_data[0][4], new_data[0][5], new_data[0][6]])
+			con.commit()
+			return ('', 204)
+
+		else: 
+			# Ensure language is provided
+			if request.form.get("input_language") == "language":
+				flash("Please select language!")
+				return redirect("/")
+		
+			# Ensure category topic is provided
+			if not request.form.get("input_category"):
+				flash("Please type in a search topic!")
+				return redirect("/")
+
+			# Call API results with given parameters 
+			else:	
+				country = request.form.get("input_language")
+				category = request.form.get("input_category")
+
+				news_result = search(country, category)
+			
+				#If results equal none
+				if not news_result:
+					flash("No results on this topic. Try anther one!")
+					return redirect("/")
+			
+				#If valid results
+				else:
+					for new in news_result: 
+						db.execute("INSERT OR IGNORE INTO news(category, name, url, description, provider, date) VALUES (?, ?, ?, ?, ?, ?)", [category, new['name'], new['url'], new['description'],new['provider'][0]['name'], new['datePublished']])
+						con.commit()
+
+					return render_template("news.html", news_result=news_result, category=category)
 
 	# User reached route via GET
 	else:
 		return render_template("index.html")
+	
 
 @app.route("/mylist", methods=["GET", "POST"])
+@login_required
 def my_list():
 	
 	# User reached route via POST (as by submitting a form via POST)
@@ -76,11 +90,12 @@ def my_list():
 		# Ensure language is provided
 		if request.form.get("input_filter") == "filter":
 			flash("Please select category!")
-			return redirect("/my_list")
+			return redirect("/mylist")
 
 		else:
 			# Get input from user for filtered category
 			filter_category = request.form.get("input_filter")
+			print(filter_category)
 
 			# Query database for users news list categories
 			my_news_categories = db.execute("SELECT DISTINCT category FROM user_news WHERE user_id = ?", [session.get("user_id")])

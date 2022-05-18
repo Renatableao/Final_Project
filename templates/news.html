@@ -1,25 +1,5 @@
 {% extends "layout.html" %}
 
-{% block script %} 
-  <script type="text/javascript">
-    function func_select_lan( thisObj )
-    {
-      var clicked_name = thisObj.name;
-      var clicked_text = thisObj.innerText;
-      document.getElementById("select_language").innerHTML = clicked_text
-      document.getElementById("input_language").value= clicked_name
-    }
-
-    function func_select_categ( thisObj )
-    {
-      var clicked_name = thisObj.name;
-      var clicked_text = thisObj.innerText;
-      document.getElementById("select_category").innerHTML = clicked_text 
-      document.getElementById("input_category").value= clicked_name
-    }
-  </script>
-
-{% endblock %}
 
 {% block title %}
     News List
@@ -36,15 +16,15 @@
             <ul>
                 <li><a id="select_language" href="#">Language</a>
                     <ul>
-                        <li><a class ="language" name="US" href="#" onclick="func_select_lan(this)">English</a></li>
-                        <li><a class ="language" name="BR" href="#" onclick="func_select_lan(this)">Portuguese</a></li>
-                        <li><a class ="language" name="FR" href="#" onclick="func_select_lan(this)">French</a></li>
-                        <li><a class ="language" name="IT" href="#" onclick="func_select_lan(this)">Italian</a></li>
-                        <li><a class ="language" name="CN" href="#" onclick="func_select_lan(this)">Chinese</a></li>
+                        <li><a class ="language" name="US" href="#" onclick="select_lan(this)">English</a></li>
+                        <li><a class ="language" name="BR" href="#" onclick="select_lan(this)">Portuguese</a></li>
+                        <li><a class ="language" name="FR" href="#" onclick="select_lan(this)">French</a></li>
+                        <li><a class ="language" name="IT" href="#" onclick="select_lan(this)">Italian</a></li>
+                        <li><a class ="language" name="CN" href="#" onclick="select_lan(this)">Chinese</a></li>
                     </ul>
                 </li>
             </ul>
-            <input type="text" id="input_category" name = "input_category" value="" placeholder = "Type in topic »">
+            <input type="text" id="input_category" name = "input_category" value="" placeholder="Type in topic »">
             <button class="btn btn-primary" id="submit" type="submit">Search</button>
         </nav> 
     </form>
@@ -58,18 +38,23 @@
             {% for new in news_result %}
                 <section class="new_container">
                     {% if new['image'] %}
-                        <img src ="{{ new['image']['contentUrl'] }}"></img>
+                        <img src ="{{ new['image']['contentUrl'] }}" onerror="this.onerror=null;this.src='/static/imgerror.png';"></img>
                         <a href="{{ new['url'] }}">{{ new["name"] }}</a>
-                        <p id="provider">{{ new['provider'][0]['name']|upper }}</p>
-                          
+                        <div class="new_footer">
+                            <p class="provider">{{ new['provider'][0]['name']|upper }}</p>
+                            <p class="date">{{ new['datePublished'][0:10] }}</p>
+                        </div>
                     {% else %}
                         <a class="no-img" href="{{ new['url'] }}">{{ new["name"] }}</a>
-                        <p id="description">{{ new['description'] }}</p>
-                        <p id="provider">{{ new['provider'][0]['name']|upper }}</p>
+                        <p class="description">{{ new['description'] }}</p>
+                        <div class="new_footer">
+                            <p class="provider">{{ new['provider'][0]['name']|upper }}</p>
+                            <p class="date">{{ new['datePublished'][0:10] }}</p>
+                        </div>
                     {% endif %}
                     <div class="new_icons">
-                        <i class="bi bi-heart-fill" id="favorite" name="favorite" title="Save as favorite"></i>
-                        <i class="bi bi-share-fill" title="Share"></i>
+                        <button class="favorite" name="favorite" ondblclick="favorite(this)" value="{{ new['name'] }}"><i class="bi bi-heart-fill" title="Save as favorite" onclick="redheart(this)"></i></button>
+                        <i class="bi bi-share-fill" id="share" name="share" title="Share"></i>
                     </div>
                 </section>
             {% endfor %}

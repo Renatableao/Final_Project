@@ -1,56 +1,5 @@
 {% extends "layout.html" %}
 
-{% block script %}
- <script type="text/javascript">
-    function check_username( thisObj )
-    {
-        if (!document.getElementById("log_username").checkValidity())
-        {
-            thisObj.value = ""
-            thisObj.placeholder = "Invalid username"
-            thisObj.style.border = "2px solid red"
-            thisObj.style.setProperty("--c", "red")
-            thisObj.classList.add('error')
-        }
-        else
-        {
-            thisObj.style.border = "none"
-        }
-    }
-
-    function check_password( thisObj )
-    {
-        if (!document.getElementById("log_password").checkValidity())
-        {
-            thisObj.value = ""
-            thisObj.placeholder = "Invalid password"
-            thisObj.style.border = "2px solid red"
-            thisObj.style.setProperty("--c", "red")
-            thisObj.classList.add('error')
-        }
-        else
-        {
-            thisObj.style.border = "none"
-        }
-    }
-
-    function password_visible( thisObj )
-    {   
-        if (thisObj.classList.contains("bi-eye"))
-        {
-            document.getElementById("log_password").type = "text"
-            thisObj.classList.replace("bi-eye", "bi-eye-slash")
-        }
-        else
-        {
-            document.getElementById("log_password").type = "password"
-            thisObj.classList.replace("bi-eye-slash", "bi-eye")
-        }
-    }
-
-</script>
-{% endblock %}
-
 {% block title %}
     Log In
 {% endblock %}

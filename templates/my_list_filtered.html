@@ -1,19 +1,5 @@
 {% extends "layout.html" %}
 
-{% block script %} 
-  <script type="text/javascript">
-    function func_filter_category( thisObj )
-    {
-      var clicked_name = thisObj.name;
-      var clicked_text = thisObj.innerText;
-      document.getElementById("select_filter_category").innerHTML = clicked_text
-      document.getElementById("input_filter").value= clicked_name
-    }
-
-</script>
-{% endblock %}
-
-
 {% block title %}
     My List Filtered
 {% endblock %}
@@ -21,21 +7,21 @@
 {% block section %}
     <div class="section">
         <div class="title">
-            <p class="newstitle"><span id="my">my</span>news<span>{{ filter_category[0]|upper}}{{filter_category[1:]|lower }}</span></p>
+            <p class="newstitle"><span id="title_my">my</span>news<span>{{ filter_category[0]|upper}}{{filter_category[1:]|lower }}</span></p>
         </div>
         <form action="/mylist" method="post" class="filter_select" >
             <nav class="filter_param">
                 <input type="hidden" id="input_filter" name ="input_filter" value="filter">
                 <ul>
-                    <li><a id="select_filter_category" href="#">Filter category</a>
+                    <li><a id="select_filter_category" href="#">Filter Category</a>
                         <ul>
                             {% for category in my_categories %}
-                            <li><a class ="filter_category" name="{{ category }}" href="#" onclick="func_filter_category(this)">{{ category[0][0]|upper }}{{ category[0][1:]|lower }}</a></li>
+                            <li><a class ="filter_category" name="{{ category[0] }}" href="#" onclick="filter_category(this)">{{ category[0][0]|upper }}{{ category[0][1:]|lower }}</a></li>
                             {% endfor %}
                         </ul>
                     </li>
                 </ul>
-                <button class="btn btn-primary" id="submit" type="submit">Search</button>
+                <button class="btn btn-primary" id="submit" type="submit">Filter</button>
             </nav> 
         </form>
     </div>
@@ -44,22 +30,16 @@
 
 {% block results %}    
     <form action="/mylist" method="post" class="my_list">
+        <div class= "my_news_list"> 
         {% for row in my_category %}
-        <div class= "my_news_list">   
-                <section class="my_new_container">
-                    {% if row[2] %}
-                        <img src ="{{ row[2]}}"></img>
-                        <div class="my_news_txt">
-                        <a href="{{ row[4] }}">{{ row[3] }}</a>
-                        <p id="description">{{ row[5] }}</p>
-                        <p id="provider">{{ row[6]|upper }}</p>
-                        </div>
-                    {% else %}
-                        <a class="no-img" href="{{ row[4] }}">{{ row[3] }}</a>
-                        <p id="description">{{ row[5] }}</p>
-                        <p id="provider">{{ row[6]|upper }}</p>
-                    {% endif %}
-                </section>
+            <section class="my_new_container">
+                <a href="{{ row[4] }}">{{ row[3] }}</a>
+                <p class="description">{{ row[5] }}</p>
+                <div class="new_footer_f">
+                    <p class="provider">{{ row[6]|upper }}</p>
+                    <p class="date">{{ row[7][0:10] }}</p>
+                </div>
+            </section>
         {% endfor %}
         </div>
     </form>
