@@ -73,6 +73,9 @@ def index():
 						db.execute("INSERT OR IGNORE INTO news(category, name, url, description, provider, date) VALUES (?, ?, ?, ?, ?, ?)", [category, new['name'], new['url'], new['description'],new['provider'][0]['name'], new['datePublished']])
 						con.commit()
 
+					if not session.get("user_id"):
+						flash("Sign in to save or share your favorite news!")
+
 					return render_template("news.html", news_result=news_result, category=category)
 
 	# User reached route via GET

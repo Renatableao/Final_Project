@@ -10,7 +10,7 @@
         <div class="title">
                 <p class="newstitle">news<span>{{ category[0]|upper}}{{category[1:]|lower }}</span></p>
         </div>
-    <form action="/" method="post" class="select" >
+    <form action="/" method="post" class="select">
         <nav class="search_param">
             <input type="hidden" id="input_language" name ="input_language" value="language">
             <ul>
@@ -55,7 +55,7 @@
                     {% if session["user_id"] %}
                     <div class="new_icons">
                         <button class="favorite" name="favorite" value="{{ new['name'] }}"><i class="bi bi-heart-fill" title="Save as favorite" onclick="redheart(this)"></i></button>
-                        <i class="bi bi-share-fill" id="share" name="share" title="Share"></i>
+                        <a class="share" name="share" href="mailto:?subject={{ new['name'] }}&body=Found this interesting news and thought you would might like it too. {{ new['url'] }}"><i class="bi bi-share-fill" title="Share"></i></a>
                     </div>
                     {% endif %}
                 </section>

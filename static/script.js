@@ -88,7 +88,27 @@ function filter_category( thisObj )
     document.getElementById("input_filter").value= clicked_name
 }
 
-function redheart (thisObj)
+function redheart( thisObj ) 
 {
     thisObj.style.color = "red"
+}
+
+function share_over(thisObj)
+{
+    thisObj.classList.replace("bi-share", "bi-share-fill")
+}
+
+function share_out( thisObj )
+{
+    thisObj.classList.replace("bi-share-fill", "bi-share")
+}
+
+function trash_over(thisObj)
+{
+    thisObj.classList.replace("bi-trash3", "bi-trash3-fill")
+}
+
+function trash_out(thisObj)
+{
+    thisObj.classList.replace("bi-trash3-fill", "bi-trash3")
 }
