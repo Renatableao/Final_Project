@@ -72,14 +72,6 @@ function select_language( thisObj )
     document.getElementById("input_language").value= clicked_name
 }
     
-function select_lan( thisObj )
-{
-    var clicked_name = thisObj.name;
-    var clicked_text = thisObj.innerText;
-    document.getElementById("select_language").innerHTML = clicked_text
-    document.getElementById("input_language").value= clicked_name
-}
-
 function filter_category( thisObj )
 {
     var clicked_name = thisObj.name;

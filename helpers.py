@@ -1,12 +1,15 @@
 import os
 import requests
 
+
 from flask import redirect, render_template, request, session
 from functools import wraps
 
 def search(country, category):
 	# Contact API
+	key = os.environ.get('API_key')
 	try:
+		
 		url = "https://bing-news-search1.p.rapidapi.com/news/search"
 
 		querystring = {"q": category, "count":"27", "sortBy":"date","cc": country,"freshness":"Month","originalImg":"true","textFormat":"Raw","safeSearch":"Strict"}
@@ -15,7 +18,7 @@ def search(country, category):
 				"X-BingApis-SDK": "true",
 				"Accept-Language": "portuguese;english;french;italian;chinese",
 				"X-RapidAPI-Host": "bing-news-search1.p.rapidapi.com",
-				"X-RapidAPI-Key": "8aa8d2751dmsh41f27642a46c540p14a215jsn97647732c7d0"
+				"X-RapidAPI-Key": key
 		}
 
 		response = requests.request("GET", url, headers=headers, params=querystring)

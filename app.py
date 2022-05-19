@@ -36,10 +36,12 @@ def index():
 	# User reached route via POST
 	if request.method == "POST":
 
+		# User clicks favorite button to save article
 		if request.form.get("favorite"):
 			news_data = db.execute("SELECT * FROM news WHERE name = ?", [request.form.get("favorite")])
 			new_data = news_data.fetchall()
 			
+			# Save article in database with user_id
 			db.execute("INSERT INTO user_news(user_id, category, name, url, description, provider, date) SELECT ?, ?, ?, ?, ?, ?, ? WHERE NOT EXISTS (SELECT 1 FROM user_news WHERE name = ? AND user_id = ?)", [session.get("user_id"), new_data[0][1], new_data[0][2], new_data[0][3], new_data[0][4], new_data[0][5], new_data[0][6], new_data[0][2], session.get("user_id")])
 			con.commit()
 			return ('', 204)
@@ -70,9 +72,11 @@ def index():
 				#If valid results
 				else:
 					for new in news_result: 
+						# Save searched articles in "news" database to be used in signed in session
 						db.execute("INSERT OR IGNORE INTO news(category, name, url, description, provider, date) VALUES (?, ?, ?, ?, ?, ?)", [category, new['name'], new['url'], new['description'],new['provider'][0]['name'], new['datePublished']])
 						con.commit()
 
+					# Advise user
 					if not session.get("user_id"):
 						flash("Sign in to save or share your favorite news!")
 
@@ -90,7 +94,7 @@ def my_list():
 	# User reached route via POST (as by submitting a form via POST)
 	if request.method == "POST":
 		
-
+		# User deletss article from favorites
 		if request.form.get("delete"):
 			db.execute("DELETE FROM user_news WHERE name = ? AND user_id = ?", [request.form.get("delete"), session.get("user_id")])
 			con.commit()
