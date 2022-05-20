@@ -13,9 +13,9 @@
         <form action="/mylist" method="post" class="filter_select" >
             <nav class="filter_param">
                 <input type="hidden" id="input_filter" name ="input_filter" value="filter">
-                <ul>
+                <ul class="filter_list"> 
                     <li><a id="select_filter_category" href="#">Filter Category</a>
-                        <ul>
+                        <ul class="options_list">
                             {% for category in my_categories %}
                             <li><a class ="filter_category" name="{{ category[0] }}" href="#" onclick="filter_category(this)">{{ category[0][0]|upper }}{{ category[0][1:]|lower }}</a></li>
                             {% endfor %}

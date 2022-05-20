@@ -1,5 +1,30 @@
 {% extends "layout.html" %}
 
+{% block script %}
+ <script type="text/javascript">
+ 
+
+    function check_password_conf( thisObj )
+    {
+        var password_conf = document.getElementById("password");
+        if (thisObj.value != password.value)
+        {
+            thisObj.value = ""
+            thisObj.placeholder = "Passwords do not match"
+            thisObj.style.border = "2px solid red"
+            thisObj.style.setProperty("--c", "red")
+            thisObj.classList.add('error')
+        }
+        else
+        {
+            thisObj.style.border = "none"
+            document.getElementById("submit").disabled = false
+        }
+    }
+ 
+</script>
+{% endblock %}
+
 {% block title %}
     Register
 {% endblock %}

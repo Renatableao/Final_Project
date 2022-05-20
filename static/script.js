@@ -1,6 +1,6 @@
 function check_username( thisObj )
 {
-    if (!document.getElementById("log_username").checkValidity())
+    if (!document.getElementById("username").checkValidity())
     {
         thisObj.value = ""
         thisObj.placeholder = "Invalid username"
@@ -16,7 +16,7 @@ function check_username( thisObj )
 
 function check_password( thisObj )
 {
-    if (!document.getElementById("log_password").checkValidity())
+    if (!document.getElementById("password").checkValidity())
     {
         thisObj.value = ""
         thisObj.placeholder = "Invalid password"
@@ -30,16 +30,17 @@ function check_password( thisObj )
     }
 }
 
+
 function password_visible( thisObj )
 {   
     if (thisObj.classList.contains("bi-eye"))
     {
-        document.getElementById("log_password").type = "text"
+        document.getElementById("password").type = "text"
         thisObj.classList.replace("bi-eye", "bi-eye-slash")
     }
     else
     {
-        document.getElementById("log_password").type = "password"
+        document.getElementById("password").type = "password"
         thisObj.classList.replace("bi-eye-slash", "bi-eye")
     }
 }

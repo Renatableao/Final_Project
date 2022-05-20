@@ -39,13 +39,13 @@
                 <section class="new_container">
                     {% if new['image'] %}
                         <img src ="{{ new['image']['contentUrl'] }}" onerror="this.onerror=null;this.src='/static/imgerror.png';"></img>
-                        <a href="{{ new['url'] }}">{{ new["name"] }}</a>
+                        <a class="article_name" href="{{ new['url'] }}">{{ new["name"] }}</a>
                         <div class="new_footer">
                             <p class="provider">{{ new['provider'][0]['name']|upper }}</p>
                             <p class="date">{{ new['datePublished'][0:10] }}</p>
                         </div>
                     {% else %}
-                        <a class="no-img" href="{{ new['url'] }}">{{ new["name"] }}</a>
+                        <a class="no-img article_name" href="{{ new['url'] }}">{{ new["name"] }}</a>
                         <p class="description">{{ new['description'] }}</p>
                         <div class="new_footer">
                             <p class="provider">{{ new['provider'][0]['name']|upper }}</p>
@@ -55,7 +55,7 @@
                     {% if session["user_id"] %}
                     <div class="new_icons">
                         <button class="favorite" name="favorite" value="{{ new['name'] }}"><i class="bi bi-heart-fill" title="Save as favorite" onclick="redheart(this)"></i></button>
-                        <a class="share" name="share" href="mailto:?subject={{ new['name'] }}&body=Found this interesting news and thought you would might like it too. {{ new['url'] }}"><i class="bi bi-share-fill" title="Share"></i></a>
+                        <a class="share" href="mailto:?subject={{ new[3] }}&body=Hi there! Just read that article and thought you would like it too! {{ new[4] }}"><i class="bi bi-share" onmouseover="share_over(this)" onmouseout="share_out(this)" title="Share"></i></a>
                     </div>
                     {% endif %}
                 </section>

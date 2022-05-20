@@ -312,11 +312,18 @@ li > a:only-child:after { content: ''; }
   
 .filter_param ul {
   padding:0;
-  width: 100%;
   list-style-type:none;
   text-align: center;
   font-size: 1rem;
   margin: 0;
+}
+
+.filter_list {
+  width: 100%;
+}
+
+.options_list {
+  width: 100%;
 }
   
 .filter_param ul li {
@@ -407,7 +414,7 @@ li > a:only-child:after { content: ''; }
   margin-top: 1rem;
 }
 
-.new_container a {
+.article_name {
   text-decoration: none;
   color: var(--second_color);
   font-weight: bold;
@@ -454,6 +461,10 @@ li > a:only-child:after { content: ''; }
   bottom: 1rem;
   cursor:pointer;
   right: 1rem;
+}
+
+.new_icons_news i {
+  color: var(--fourth_color);
 }
 
 .new_icons i {
@@ -557,4 +568,116 @@ footer {
 
 footer a {
   color: var(--fourth_color);
+}
+
+@media screen and (max-width: 960px) {
+
+  .section {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    gap: 0;
+  }
+
+  .newstitle {
+    font-size: 7rem;
+    margin: 0;
+  }
+
+  #title_my {
+    font-size: 1.8rem;
+    margin: 0;
+  }
+
+  .select {
+    position: relative;
+    margin: 0;
+  }
+
+  .filter_select {
+    position: relative;
+    margin: 0;
+  }
+
+  #select_language {
+    padding: 0.5rem;
+  }
+
+  .search_param {
+    gap: 0;
+    justify-content: left;
+}
+
+  .filter_param {
+  gap: 0;
+  justify-content: left;
+}
+
+  .search_param ul {
+  width: auto;
+}
+
+  .filter_list {
+    width: 50%;
+  }
+  
+  .newstitle span {
+    font-size: 1rem;
+  }
+
+  .box_list {
+    margin: 20rem 0 0 0 ; 
+  }
+
+  .my_list {
+    margin: 20rem 0 0 0 ; 
+  }
+
+  .language {
+    font-size: 0.7rem;
+    padding: 0;
+  }
+
+  .filter_category {
+    font-size: 0.7rem;
+    padding: 0;
+  }
+
+}
+
+@media screen and (min-width: 768px)  and (max-width: 960px) {
+
+  .newstitle {
+    font-size: 9rem;
+    margin: 0;
+  }
+  .newstitle span {
+    font-size: 1.4rem;
+  }
+
+  .box_list {
+    margin: 23rem 0 0 0 ;
+  }
+  
+  .language {
+    font-size: 0.8rem;
+    padding: 0.7rem;
+  }
+
+  .my_list {
+    margin: 23rem 0 0 0 ;
+  }
+  
+  .filter_category {
+    font-size: 0.8rem;
+    padding: 0.7rem;
+  }
+
+  #title_my {
+    font-size: 2.5rem;
+  }
+
+  .filter_list {
+    width: 100%;
+  }
 }
