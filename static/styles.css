@@ -52,9 +52,13 @@ i {
   color: var(--second_color);
 }
 
+.flashes {
+  justify-content: center;
+}
 .alert {
   font-size: 0.9rem;
   color: var(--second_color);
+  list-style: none;
 }
 
 /*Body*/

@@ -61,12 +61,12 @@ def index():
 		else: 
 			# Ensure language is provided
 			if request.form.get("input_language") == "language":
-				flash("Please select language!")
+				flash("Please select language!", 'alert-info')
 				return redirect("/")
 		
 			# Ensure category topic is provided
 			if not request.form.get("input_category"):
-				flash("Please type in a search topic!")
+				flash("Please type in a search topic!", 'alert-info')
 				return redirect("/")
 
 			# Call API results with given parameters 
@@ -78,7 +78,7 @@ def index():
 			
 				#If results equal none
 				if not news_result:
-					flash("No results on this topic. Try anther one!")
+					flash("No results on this topic. Try anther one!", 'alert-danger')
 					return redirect("/")
 			
 				#If valid results
@@ -90,7 +90,7 @@ def index():
 
 					# Advise user
 					if not session.get("user_id"):
-						flash("Sign in to save or share your favorite news!")
+						flash("Sign in to save or share your favorite news!", 'alert-info')
 
 					return render_template("news.html", news_result=news_result, category=category)
 
@@ -116,7 +116,7 @@ def my_list():
 		else:
 			# Ensure language is provided
 			if request.form.get("input_filter") == "filter":
-				flash("Please select category!")
+				flash("Please select category!", 'alert-info')
 				return redirect("/mylist")
 
 			else:
@@ -158,7 +158,7 @@ def register():
 
 			# Ensure username is not already used
 			if len(user_l) == 1:
-				flash("User already exists! Please register another one.")
+				flash("User already exists! Please register another one.", 'alert-danger')
 				return render_template("register.html")
 
 			hash = generate_password_hash(request.form.get("password"))
@@ -173,7 +173,7 @@ def register():
 			session["user_username"] = user_l[0][1]
 
 			# Redirect user to favorites
-			flash("Registered!")
+			flash("Registered!", 'alert-success')
 			return redirect("/mylist")
 
 	# User reached route via GET (as by clicking a link or via redirect)
@@ -197,7 +197,7 @@ def login():
 
 		# Ensure email exists and password is correct
 		if len(user_l) != 1 or not check_password_hash(user_l[0][2], request.form.get("password")):
-			flash("Invalid email and/or password!")
+			flash("Invalid email and/or password!", 'alert-danger')
 			return render_template("login.html")
 
 		# Remember which user has logged in
@@ -205,6 +205,7 @@ def login():
 		session["user_username"] = user_l[0][1]
 
 		# Redirect user to favorites
+		flash("Browse homepage to search for news!", 'alert-info')
 		return redirect("/mylist")
 
 	# User reached route via GET (as by clicking a link or via redirect)
@@ -225,7 +226,7 @@ def forgot_password():
 
 		# Ensure email is already registered
 		if len(user_l) != 1:
-			flash("Not a registered email!")
+			flash("Not a registered email!", 'alert-danger')
 			return render_template("forgot_password.html")
 		
 		# Generate reset token
@@ -239,9 +240,9 @@ def forgot_password():
 
 		#Send email with reset link
 		msg = Message('Password reset request', sender = os.environ.get('email_username'), recipients = [user_l[0][3]])
-		msg.body = f"To reset your password, please follow the link bellow. {url_for('reset_password', token=token, user=user, _external=True)}"
+		msg.body = f"To reset your password, please follow this link:  {url_for('reset_password', token=token, user=user, _external=True)}"
 		mail.send(msg)
-		flash("Verification link sent. Please check your email.")
+		flash("Verification link sent. Please check your email.", 'alert-success')
 		return redirect("/forgot_password")
 
 	else:
@@ -258,7 +259,7 @@ def reset_password():
 		hash = generate_password_hash(request.form.get("password"))
 		db.execute("UPDATE users SET hash = ? WHERE id = ?", [hash, request.form.get("user")] )
 		con.commit()
-		flash("Password reset successfully!")
+		flash("Password reset successfully!", 'alert-success')
 		return redirect('/login')
 		
 		
@@ -273,10 +274,10 @@ def reset_password():
 				con.commit()
 				return render_template("reset_password.html", user=user)
 			else:
-				flash("Invalid link! Please request a new one.")
+				flash("Invalid link! Please request a new one.", 'alert-danger')
 				return redirect("/forgot_password")
 		except jwt.ExpiredSignatureError:
-			flash("Token has expired! Please request a new one.")
+			flash("Token has expired! Please request a new one.", 'alert-danger')
 			db.execute("UPDATE users SET token = ?  WHERE id = ?", ["", user])
 			con.commit()
 			return redirect("/forgot_password")
@@ -290,7 +291,7 @@ def change_password():
 			hash = generate_password_hash(request.form.get("password"))
 			db.execute("UPDATE users SET hash = ? WHERE id = ?", [hash, session.get("user_id")] )
 			con.commit()
-			flash("Password changed successfully!")
+			flash("Password changed successfully!", 'alert-succes')
 			return redirect('/change_password')
 
 		else:
