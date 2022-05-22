@@ -1,20 +1,23 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Log In
+    Get email confirmation
 {% endblock %}
 
 {% block section %}
     <form action="/login" method="post" class="login">
         <h1>Log in</h1>
         <div class="mb-3">
-            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="username" name="username" placeholder="Username" type="text" pattern="[a-zA-Z].{3,}" onchange="check_username(this)">
+            <input autofocus class="form-control mx-auto w-auto" id="email" name="email" placeholder="E-mail" type="email" onchange="check_email(this)">
         </div>
         <div class="mb-3 pass_field">
             <input class="form-control mx-auto w-auto" id="password" name="password" placeholder="Password" type="password">
             <i class="bi bi-eye" onclick="password_visible(this)"></i>
         </div>
         <button class="btn btn-primary" id="submit" type="submit">Log In</button>
-        <p>Not Registered? <span><a href="/register">Sign Up Here</a></p></span>
+        <div>
+            <p>Not Registered? <span><a href="/register">Sign Up Here</a></p></span>
+            <p>Forgot password? <span><a id="reset_link" name="reset_link" href="/forgot_password">Reset here</a></p></span>
+        </div>
     </form>
 {% endblock %}

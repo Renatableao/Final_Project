@@ -1,13 +1,13 @@
 import os
 import requests
-
-
-from flask import redirect, render_template, request, session
+from dotenv import load_dotenv, find_dotenv
+from flask import Flask, redirect, render_template, request, session
 from functools import wraps
+
 
 def search(country, category):
 	# Contact API
-	key = os.environ.get('API_key')
+	load_dotenv(find_dotenv())
 	try:
 		
 		url = "https://bing-news-search1.p.rapidapi.com/news/search"
@@ -18,7 +18,7 @@ def search(country, category):
 				"X-BingApis-SDK": "true",
 				"Accept-Language": "portuguese;english;french;italian;chinese",
 				"X-RapidAPI-Host": "bing-news-search1.p.rapidapi.com",
-				"X-RapidAPI-Key": key
+				"X-RapidAPI-Key": os.environ.get('API_key')
 		}
 
 		response = requests.request("GET", url, headers=headers, params=querystring)
@@ -50,3 +50,5 @@ def login_required(f):
 			return redirect("/login")
 		return f(*args, **kwargs)
 	return decorated_function
+
+	

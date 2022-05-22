@@ -44,7 +44,8 @@
                     {% if session["user_id"] %}
                         <ul class="navbar-nav ms-auto mt-2">
                             <li class="nav-item"><a class="nav-link" id="hello_user" href="#">Hello, {{ session["user_username"] }}!</li></a>
-                            <li class="nav-item"><a class="nav-link" id="favorites" href="/mylist"><i class="bi bi-heart-fill"></i></li></a>
+                            <li class="nav-item"><a class="nav-link" id="favorites" href="/mylist"><i class="bi bi-heart-fill"></i> Favorites</li></a>
+                            <li class="nav-item"><a class="nav-link" href="/change_password">Security</a></li>
                             <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
                         </ul> 
                     {% else %}

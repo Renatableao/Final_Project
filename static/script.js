@@ -1,9 +1,9 @@
-function check_username( thisObj )
+function check_email( thisObj )
 {
-    if (!document.getElementById("username").checkValidity())
+    if (!document.getElementById("email").checkValidity())
     {
         thisObj.value = ""
-        thisObj.placeholder = "Invalid username"
+        thisObj.placeholder = "Invalid e-mail"
         thisObj.style.border = "2px solid red"
         thisObj.style.setProperty("--c", "red")
         thisObj.classList.add('error')

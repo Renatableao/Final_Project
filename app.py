@@ -1,13 +1,25 @@
-import re
 import sqlite3
-import requests
-from flask import Flask, flash, redirect, render_template, request, session
+from ssl import VERIFY_X509_PARTIAL_CHAIN
+from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_session import Session
+from flask_mail import Mail, Message
+from time import time
+import jwt
+import os
 from werkzeug.security import check_password_hash, generate_password_hash
-
+from dotenv import load_dotenv, find_dotenv
 from helpers import login_required, search
 # Configure application
 app = Flask(__name__)
+
+# Configure Flask_mail
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = os.environ.get('email_username')
+app.config['MAIL_PASSWORD'] = os.environ.get('email_key')
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+mail= Mail(app)
 
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -141,21 +153,21 @@ def register():
 	if request.method == "POST":
 
 			# Query database for username
-			user = db.execute("SELECT * FROM users WHERE username = ?", [request.form.get("username")])
+			user = db.execute("SELECT * FROM users WHERE email = ?", [request.form.get("email")])
 			user_l = user.fetchall()
 
 			# Ensure username is not already used
 			if len(user_l) == 1:
-				flash("User already exists! Please try another one.")
+				flash("User already exists! Please register another one.")
 				return render_template("register.html")
 
 			hash = generate_password_hash(request.form.get("password"))
 
-			db.execute("INSERT INTO users(username, hash) VALUES (?, ?)", [(request.form.get("username")) , hash])
+			db.execute("INSERT INTO users(username, email, hash) VALUES (?, ?, ?)", [(request.form.get("username")) , (request.form.get("email")), hash])
 			con.commit()
 
 			# Remember which user has logged in
-			user = db.execute("SELECT * FROM users WHERE username = ?", [request.form.get("username")])
+			user = db.execute("SELECT * FROM users WHERE email = ?", [request.form.get("email")])
 			user_l = user.fetchall()
 			session["user_id"] = user_l[0][0]
 			session["user_username"] = user_l[0][1]
@@ -178,13 +190,14 @@ def login():
 	# User reached route via POST (as by submitting a form via POST)
 	if request.method == "POST":
 
-		# Query database for username
-		user = db.execute("SELECT * FROM users WHERE username = ?", [request.form.get("username")])
+
+		# Query database for user
+		user = db.execute("SELECT * FROM users WHERE email = ?", [request.form.get("email")])
 		user_l = user.fetchall()
 
-		# Ensure username exists and password is correct
+		# Ensure email exists and password is correct
 		if len(user_l) != 1 or not check_password_hash(user_l[0][2], request.form.get("password")):
-			flash("Invalid username and/or password!")
+			flash("Invalid email and/or password!")
 			return render_template("login.html")
 
 		# Remember which user has logged in
@@ -198,6 +211,90 @@ def login():
 	else:
 		return render_template("login.html")
 
+
+@app.route("/forgot_password", methods=["GET", "POST"])
+def forgot_password():
+	
+	# User reached route via POST (as by submitting a form via POST)
+	if request.method == "POST":
+
+		# Query database for user
+		user_input = db.execute("SELECT * FROM users WHERE email = ?", [request.form.get("email")])
+		user_l = user_input.fetchall()
+		user = user_l[0][0]
+
+		# Ensure email is already registered
+		if len(user_l) != 1:
+			flash("Not a registered email!")
+			return render_template("forgot_password.html")
+		
+		# Generate reset token
+		load_dotenv(find_dotenv())
+		key = os.environ.get('SECRET_KEY')
+		token = jwt.encode({"reset": user_l[0][3], 'exp': time() + 120}, key, algorithm="HS256")
+		
+		#Save token in database
+		db.execute("UPDATE users SET token = ? WHERE id = ?", [token, user])
+		con.commit()
+
+		#Send email with reset link
+		msg = Message('Password reset request', sender = os.environ.get('email_username'), recipients = [user_l[0][3]])
+		msg.body = f"To reset your password, please follow the link bellow. {url_for('reset_password', token=token, user=user, _external=True)}"
+		mail.send(msg)
+		flash("Verification link sent. Please check your email.")
+		return redirect("/forgot_password")
+
+	else:
+		return render_template("forgot_password.html")
+
+@app.route("/reset_password", methods=["GET", "POST"])
+def reset_password():
+
+	user = request.args.get('user')
+	token = request.args.get('token')
+
+	if request.method == "POST":
+
+		hash = generate_password_hash(request.form.get("password"))
+		db.execute("UPDATE users SET hash = ? WHERE id = ?", [hash, request.form.get("user")] )
+		con.commit()
+		flash("Password reset successfully!")
+		return redirect('/login')
+		
+		
+	else:
+		load_dotenv(find_dotenv())
+		key = os.environ.get('SECRET_KEY')
+		try:
+			jwt.decode(token, key, algorithms="HS256")
+			user_token = db.execute("SELECT token FROM users where id= ?", [user]).fetchall()[0][0]
+			if token == user_token:
+				db.execute("UPDATE users SET token = ?  WHERE id = ?", ["", user])
+				con.commit()
+				return render_template("reset_password.html", user=user)
+			else:
+				flash("Invalid link! Please request a new one.")
+				return redirect("/forgot_password")
+		except jwt.ExpiredSignatureError:
+			flash("Token has expired! Please request a new one.")
+			db.execute("UPDATE users SET token = ?  WHERE id = ?", ["", user])
+			con.commit()
+			return redirect("/forgot_password")
+
+
+@app.route("/change_password", methods=["GET", "POST"])
+@login_required
+def change_password():
+
+		if request.method == "POST":
+			hash = generate_password_hash(request.form.get("password"))
+			db.execute("UPDATE users SET hash = ? WHERE id = ?", [hash, session.get("user_id")] )
+			con.commit()
+			flash("Password changed successfully!")
+			return redirect('/change_password')
+
+		else:
+			return render_template("change_password.html")
 
 @app.route("/logout")
 def logout():
