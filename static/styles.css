@@ -52,9 +52,6 @@ i {
   color: var(--second_color);
 }
 
-.flashes {
-  justify-content: center;
-}
 .alert {
   font-size: 0.9rem;
   color: var(--second_color);
@@ -134,7 +131,7 @@ main {
   color: var(--fourth_color);
 }
 
-#login_link {
+#login_link, #spinner {
   height: 1.8rem;
   font-size: 0.9rem;
   border-radius: 0.2rem;
@@ -145,7 +142,15 @@ main {
   padding: 0rem 1rem;
 }
 
-#login_link:hover {
+#spinner {
+  display: none;
+}
+
+.spinner-border {
+  margin-right: 0.3rem;
+}
+
+#login_link:hover, #spinner:hover {
   background-color: var(--fourth_color);
   color: var(--first_color); 
 }

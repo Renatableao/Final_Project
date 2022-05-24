@@ -152,8 +152,21 @@ def register():
 	# User reached route via POST (as by submitting a form via POST)
 	if request.method == "POST":
 
+			# if user does not type in name, email or password
+			if not request.form.get("username"):
+				flash("Must provide name!", 'alert-danger')
+				return redirect("/register")
+			
+			if not request.form.get("email"):
+				flash("Must provide email!", 'alert-danger')
+				return redirect("/register")
+
+			if not request.form.get("password"):
+				flash("Must provide password!", 'alert-danger')
+				return redirect("/register")
+
 			# Query database for username
-			user = db.execute("SELECT * FROM users WHERE email = ?", [request.form.get("email")])
+			user = db.execute("SELECT * FROM users WHERE email = ?", [request.form.get("email").lower()])
 			user_l = user.fetchall()
 
 			# Ensure username is not already used
@@ -163,18 +176,18 @@ def register():
 
 			hash = generate_password_hash(request.form.get("password"))
 
-			db.execute("INSERT INTO users(username, email, hash) VALUES (?, ?, ?)", [(request.form.get("username")) , (request.form.get("email")), hash])
+			db.execute("INSERT INTO users(username, email, hash) VALUES (?, ?, ?)", [(request.form.get("username")).lower() , (request.form.get("email")).lower(), hash])
 			con.commit()
 
 			# Remember which user has logged in
-			user = db.execute("SELECT * FROM users WHERE email = ?", [request.form.get("email")])
+			user = db.execute("SELECT * FROM users WHERE email = ?", [request.form.get("email").lower()])
 			user_l = user.fetchall()
 			session["user_id"] = user_l[0][0]
 			session["user_username"] = user_l[0][1]
 
 			# Redirect user to favorites
 			flash("Registered!", 'alert-success')
-			return redirect("/mylist")
+			return redirect("/")
 
 	# User reached route via GET (as by clicking a link or via redirect)
 	else:
@@ -190,23 +203,30 @@ def login():
 	# User reached route via POST (as by submitting a form via POST)
 	if request.method == "POST":
 
-
-		# Query database for user
-		user = db.execute("SELECT * FROM users WHERE email = ?", [request.form.get("email")])
-		user_l = user.fetchall()
-
-		# Ensure email exists and password is correct
-		if len(user_l) != 1 or not check_password_hash(user_l[0][2], request.form.get("password")):
-			flash("Invalid email and/or password!", 'alert-danger')
+		# If user does not type in email or password
+		if not request.form.get("email"):
+			flash("Must provide email!", 'alert-danger')
 			return render_template("login.html")
 
-		# Remember which user has logged in
-		session["user_id"] = user_l[0][0]
-		session["user_username"] = user_l[0][1]
+		if not request.form.get("password"):
+			flash("Must provide password!", 'alert-danger')
+			return render_template("login.html")
 
-		# Redirect user to favorites
-		flash("Browse homepage to search for news!", 'alert-info')
-		return redirect("/mylist")
+		else: # Query database for user
+			user = db.execute("SELECT * FROM users WHERE email = ?", [request.form.get("email").lower()])
+			user_l = user.fetchall()
+
+
+			# Ensure email exists and password is correct
+			if len(user_l) != 1 or not check_password_hash(user_l[0][2], request.form.get("password")):
+				flash("Invalid email and/or password!", 'alert-danger')
+				return render_template("login.html")
+
+			else: 
+				# Remember which user has logged in
+				session["user_id"] = user_l[0][0]
+				session["user_username"] = user_l[0][1]
+				return redirect("/")
 
 	# User reached route via GET (as by clicking a link or via redirect)
 	else:
@@ -219,8 +239,13 @@ def forgot_password():
 	# User reached route via POST (as by submitting a form via POST)
 	if request.method == "POST":
 
+		# If user does not type email
+		if not request.form.get("email"):
+			flash("Must provide email!", 'alert-danger')
+			return redirect("/forgot_password")
+
 		# Query database for user
-		user_input = db.execute("SELECT * FROM users WHERE email = ?", [request.form.get("email")])
+		user_input = db.execute("SELECT * FROM users WHERE email = ?", [request.form.get("email").lower()])
 		user_l = user_input.fetchall()
 		user = user_l[0][0]
 
@@ -245,37 +270,52 @@ def forgot_password():
 		flash("Verification link sent. Please check your email.", 'alert-success')
 		return redirect("/forgot_password")
 
+	# User reached route via GET (as by clicking a link or via redirect)	
 	else:
 		return render_template("forgot_password.html")
 
 @app.route("/reset_password", methods=["GET", "POST"])
 def reset_password():
 
+	# Store email sent info in variables
 	user = request.args.get('user')
 	token = request.args.get('token')
 
+	# User reached route via POST (as by submitting a form via POST)
 	if request.method == "POST":
 
+		# If user des not type new password
+		if not request.form.get("password"):
+			flash("Must type in new password!", 'alert-danger')
+			return render_template("reset_password.html")
+
+		# Hash new password and replace it in database
 		hash = generate_password_hash(request.form.get("password"))
 		db.execute("UPDATE users SET hash = ? WHERE id = ?", [hash, request.form.get("user")] )
 		con.commit()
 		flash("Password reset successfully!", 'alert-success')
 		return redirect('/login')
 		
-		
+	# User reached route via GET (as by clicking a link or via redirect)	
 	else:
 		load_dotenv(find_dotenv())
 		key = os.environ.get('SECRET_KEY')
 		try:
+			# Check if token has expired
 			jwt.decode(token, key, algorithms="HS256")
 			user_token = db.execute("SELECT token FROM users where id= ?", [user]).fetchall()[0][0]
+			
+			# Check if token is valid and associated to user
 			if token == user_token:
+				# Delete used token and redirect user to reset_password
 				db.execute("UPDATE users SET token = ?  WHERE id = ?", ["", user])
 				con.commit()
 				return render_template("reset_password.html", user=user)
 			else:
 				flash("Invalid link! Please request a new one.", 'alert-danger')
 				return redirect("/forgot_password")
+		
+		# If token is expeired
 		except jwt.ExpiredSignatureError:
 			flash("Token has expired! Please request a new one.", 'alert-danger')
 			db.execute("UPDATE users SET token = ?  WHERE id = ?", ["", user])
@@ -287,15 +327,23 @@ def reset_password():
 @login_required
 def change_password():
 
-		if request.method == "POST":
-			hash = generate_password_hash(request.form.get("password"))
-			db.execute("UPDATE users SET hash = ? WHERE id = ?", [hash, session.get("user_id")] )
-			con.commit()
-			flash("Password changed successfully!", 'alert-succes')
-			return redirect('/change_password')
+	# User reached route via POST (as by submitting a form via POST)
+	if request.method == "POST":
 
-		else:
-			return render_template("change_password.html")
+		# If user des not type new password
+		if not request.form.get("password"):
+			flash("Must type in new password!", 'alert-danger')
+			return redirect("/change_password")
+
+		# Hash new password and replace it in database
+		hash = generate_password_hash(request.form.get("password"))
+		db.execute("UPDATE users SET hash = ? WHERE id = ?", [hash, session.get("user_id")] )
+		con.commit()
+		flash("Password changed successfully!", 'alert-succes')
+		return redirect('/change_password')
+
+	else:
+		return render_template("change_password.html")
 
 @app.route("/logout")
 def logout():

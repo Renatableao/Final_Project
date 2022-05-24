@@ -105,3 +105,9 @@ function trash_out(thisObj)
 {
     thisObj.classList.replace("bi-trash3-fill", "bi-trash3")
 }
+
+function loading(thisObj)
+{
+    thisObj.style.display = "none"
+    document.getElementById("spinner").style.display = "block"
+}
