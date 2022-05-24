@@ -33,6 +33,6 @@ The folder and files used and attached to this project are as follows:
 . app.py 
 . helpers.py 
 . finalproject.db 
-. requirements.txt (packages on which this app depends)
+. requirements.txt (packages on which this project depends)
 
 This was a challenging but fun final task that allowed me to test all my new developing skills learnt at CS50. Hope you'll enjoy browsing!
