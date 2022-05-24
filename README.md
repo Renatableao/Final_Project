@@ -21,7 +21,13 @@ The Register and Login pages use Flask forms and JavaScript functions to validat
 
 In addition to session features, users are allowed to change password if logged in or reset password if forgotten. This is accomplished by Flask-mail, which sends an email to the user with a reset link attached to a 8 minute expiration token that redirects to a **reset_password** html page.
 
-All the information collected by inputs on the flask forms and routes of the website such as registration and login details, news articles provided by the API and articles saved as favorites by users are stored in a database file named finalproject.db. Those informations are then accessed by SQLite3 commands to, for example, start a user session based in the user_id or display in the personal page all the user's favorite articles.
+All the information collected by inputs on the flask forms and routes of the website are stored in a database file named finalproject.db. This database consists of three tables:
+
+. users (holds information from user registration: id, username, hashed password, email and, if any, token for reseting password)
+. new (holds all article's informations requested from API)
+. user_news (holds information of articles saved as favorites such as: category, url, description, provider and publication date)
+
+Those informations are then accessed by SQLite3 commands to, for example, start a user session based in the user_id or display in the personal page all the user's favorite articles.
 
 Sensitive information as API key, passwords and SECRET_KEY are stored in local file as environment variables in a file called ***.env*** and prevented to be pushed to an open repository by .gitignore.
 
