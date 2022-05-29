@@ -3,7 +3,9 @@ CS50 Final Project
 
 CS50 Final Project
 
-My name is Renata Barcelos. I'm from Brazil and this is my CS50's Final Project: "New's Collection".
+My name is Renata Barcelos. I'm from Brazil and this is my CS50's Final Project: "News Collection".
+
+https://youtu.be/mZDIB0Jky38
 
 I've developed a responsive website built upon the data and functionality of an existing application called Bing News Search API.
 
