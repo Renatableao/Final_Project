@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+
+{% block title %}
+    Search News
+{% endblock %}
+
+{% block section %}
+<div class="section">
+    <div class="title">
+      <p class="newstitle">news</p>
+    </div>
+  <form action="/" method="post" class="select">
+    <nav class="search_param">
+        <input type="hidden" id="input_language" name ="input_language" value="language">
+        <ul>
+          <li><a id="select_language" href="#">Language</a>
+            <ul>
+              <li><a class ="language" name="US" href="#" onclick="select_language(this)">English</a></li>
+              <li><a class ="language" name="BR" href="#" onclick="select_language(this)">Portuguese</a></li>
+              <li><a class ="language" name="FR" href="#" onclick="select_language(this)">French</a></li>
+              <li><a class ="language" name="IT" href="#" onclick="select_language(this)">Italian</a></li>
+              <li><a class ="language" name="CN" href="#" onclick="select_language(this)">Chinese</a></li>
+            </ul>
+          </li>
+        </ul>
+        <input type="text" id="input_category" name = "input_category" value="" placeholder = "Type in topic »">
+        <button class="btn btn-primary" id="submit" type="submit">Search</button>
+      </nav> 
+    </form>
+</div>
+{% endblock %}
