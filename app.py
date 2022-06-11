@@ -30,7 +30,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configure SQLite to read database
-con = sqlite3.connect("postgres://qmwgpuzpithzzk:07791807a1e3bd7d7028824cf3366adbdf0d9c4ebdd82f728081c35534221b3f@ec2-34-198-186-145.compute-1.amazonaws.com:5432/deqg3vamtv2ela", check_same_thread=False)
+con = sqlite3.connect("postgres://cgrclmtuxjcmql:57fa3009cd53b1c524510bfdf20b463cb5d11e64180c3ca494ecc6d02d94ad53@ec2-54-165-178-178.compute-1.amazonaws.com:5432/d7bcgerk5e2tnt", check_same_thread=False)
 # con = sqlite3.connect("finalproject.db", check_same_thread=False)
 db = con.cursor()
 
