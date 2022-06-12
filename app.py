@@ -37,9 +37,9 @@ Session(app)
 
 
 load_dotenv(find_dotenv())
-#app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-#app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('heroku_db')
-#db = SQLAlchemy(app)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('heroku_db')
+dbpost = SQLAlchemy(app)
 db_string = os.environ.get('heroku_db')
 db = create_engine(db_string)
 
