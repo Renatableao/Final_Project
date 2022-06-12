@@ -1,13 +1,13 @@
-import sqlite3
+
 from ssl import VERIFY_X509_PARTIAL_CHAIN
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_session import Session
 from flask_mail import Mail, Message
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
 from time import time
 import jwt
 import os
-import sqlalchemy
 from werkzeug.security import check_password_hash, generate_password_hash
 from dotenv import load_dotenv, find_dotenv
 from helpers import login_required, search
@@ -37,45 +37,16 @@ Session(app)
 
 
 load_dotenv(find_dotenv())
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('heroku_db')
-db = SQLAlchemy(app)
+#app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+#app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('heroku_db')
+#db = SQLAlchemy(app)
+db_string = os.environ.get('heroku_db')
+db = create_engine(db_string)
 
-
-db.execute("CREATE TABLE "news" (
-	"news_id"	INTEGER NOT NULL UNIQUE,
-	"category"	TEXT NOT NULL,
-	"name"	TEXT NOT NULL UNIQUE,
-	"url"	TEXT NOT NULL,
-	"description"	TEXT NOT NULL,
-	"provider"	TEXT NOT NULL,
-	"date"	NUMERIC,
-	"image"	INTEGER,
-	PRIMARY KEY("news_id" AUTOINCREMENT)""
-))
-
-db.execute("CREATE TABLE "user_news" (
-	"id"	INTEGER NOT NULL UNIQUE,
-	"user_id"	INTEGER NOT NULL,
-	"category"	INTEGER,
-	"name"	TEXT NOT NULL,
-	"url"	TEXT,
-	"description"	INTEGER NOT NULL,
-	"provider"	TEXT,
-	"date"	NUMERIC,
-	FOREIGN KEY("user_id") REFERENCES "users",
-	PRIMARY KEY("id" AUTOINCREMENT)"
-))
-
-db.execute("CREATE TABLE "users" (
-	"id"	INTEGER NOT NULL UNIQUE,
-	"username"	TEXT NOT NULL,
-	"hash"	TEXT NOT NULL,
-	"email"	TEXT,
-	"token"	TEXT,
-	PRIMARY KEY("id" AUTOINCREMENT)"
-))
-
+#Create tables
+db.execute("CREATE TABLE news(news_id INTEGER NOT NULL UNIQUE, category	TEXT NOT NULL, name	TEXT NOT NULL UNIQUE, url TEXT NOT NULL, description TEXT NOT NULL, provider TEXT NOT NULL, date NUMERIC, image	INTEGER, PRIMARY KEY(news_id AUTOINCREMENT))")
+db.execute("CREATE TABLE user_news(id INTEGER NOT NULL UNIQUE, user_id INTEGER NOT NULL, category INTEGER, name	TEXT NOT NULL, url TEXT, description INTEGER NOT NULL, provider TEXT, date NUMERIC, FOREIGN KEY(user_id) REFERENCES users, PRIMARY KEY(id AUTOINCREMENT))")
+db.execute("CREATE TABLE users(id INTEGER NOT NULL UNIQUE, username TEXT NOT NULL, hash TEXT NOT NULL, email TEXT, token TEXT, PRIMARY KEY(id AUTOINCREMENT))")
 
 @app.after_request
 def after_request(response):
