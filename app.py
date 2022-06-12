@@ -64,7 +64,7 @@ def index():
 			
 			# Save article in database with user_id
 			db.execute("INSERT INTO user_news(user_id, category, name, url, description, provider, date) SELECT ?, ?, ?, ?, ?, ?, ? WHERE NOT EXISTS (SELECT 1 FROM user_news WHERE name = ? AND user_id = ?)", [session.get("user_id"), new_data[0][1], new_data[0][2], new_data[0][3], new_data[0][4], new_data[0][5], new_data[0][6], new_data[0][2], session.get("user_id")])
-			con.commit()
+			#con.commit()
 			return ('', 204)
 
 		else: 
@@ -95,7 +95,7 @@ def index():
 					for new in news_result: 
 						# Save searched articles in "news" database to be used in signed in session
 						db.execute("INSERT OR IGNORE INTO news(category, name, url, description, provider, date) VALUES (?, ?, ?, ?, ?, ?)", [category, new['name'], new['url'], new['description'],new['provider'][0]['name'], new['datePublished']])
-						con.commit()
+						#con.commit()
 
 					# Advise user
 					if not session.get("user_id"):
@@ -118,7 +118,7 @@ def my_list():
 		# User deletss article from favorites
 		if request.form.get("delete"):
 			db.execute("DELETE FROM user_news WHERE name = ? AND user_id = ?", [request.form.get("delete"), session.get("user_id")])
-			con.commit()
+			#con.commit()
 			return redirect("/mylist")
 
 		
@@ -186,7 +186,7 @@ def register():
 			hash = generate_password_hash(request.form.get("password"))
 
 			db.execute("INSERT INTO users(username, email, hash) VALUES (?, ?, ?)", [(request.form.get("username")).lower() , (request.form.get("email")).lower(), hash])
-			con.commit()
+			#con.commit()
 
 			# Remember which user has logged in
 			user = db.execute("SELECT * FROM users WHERE email = ?", [request.form.get("email").lower()])
@@ -270,7 +270,7 @@ def forgot_password():
 		
 		#Save token in database
 		db.execute("UPDATE users SET token = ? WHERE id = ?", [token, user])
-		con.commit()
+		#con.commit()
 
 		#Send email with reset link
 		msg = Message('Password reset request', sender = os.environ.get('email_username'), recipients = [user_l[0][3]])
@@ -301,7 +301,7 @@ def reset_password():
 		# Hash new password and replace it in database
 		hash = generate_password_hash(request.form.get("password"))
 		db.execute("UPDATE users SET hash = ? WHERE id = ?", [hash, request.form.get("user")] )
-		con.commit()
+		#con.commit()
 		flash("Password reset successfully!", 'alert-success')
 		return redirect('/login')
 		
@@ -318,7 +318,7 @@ def reset_password():
 			if token == user_token:
 				# Delete used token and redirect user to reset_password
 				db.execute("UPDATE users SET token = ?  WHERE id = ?", ["", user])
-				con.commit()
+				#con.commit()
 				return render_template("reset_password.html", user=user)
 			else:
 				flash("Invalid link! Please request a new one.", 'alert-danger')
@@ -328,7 +328,7 @@ def reset_password():
 		except jwt.ExpiredSignatureError:
 			flash("Token has expired! Please request a new one.", 'alert-danger')
 			db.execute("UPDATE users SET token = ?  WHERE id = ?", ["", user])
-			con.commit()
+			#con.commit()
 			return redirect("/forgot_password")
 
 
@@ -347,7 +347,7 @@ def change_password():
 		# Hash new password and replace it in database
 		hash = generate_password_hash(request.form.get("password"))
 		db.execute("UPDATE users SET hash = ? WHERE id = ?", [hash, session.get("user_id")] )
-		con.commit()
+		#con.commit()
 		flash("Password changed successfully!", 'alert-succes')
 		return redirect('/change_password')
 
