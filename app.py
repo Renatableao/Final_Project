@@ -42,6 +42,41 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('heroku_db')
 db = SQLAlchemy(app)
 
 
+db.execute("CREATE TABLE "news" (
+	"news_id"	INTEGER NOT NULL UNIQUE,
+	"category"	TEXT NOT NULL,
+	"name"	TEXT NOT NULL UNIQUE,
+	"url"	TEXT NOT NULL,
+	"description"	TEXT NOT NULL,
+	"provider"	TEXT NOT NULL,
+	"date"	NUMERIC,
+	"image"	INTEGER,
+	PRIMARY KEY("news_id" AUTOINCREMENT)""
+))
+
+db.execute("CREATE TABLE "user_news" (
+	"id"	INTEGER NOT NULL UNIQUE,
+	"user_id"	INTEGER NOT NULL,
+	"category"	INTEGER,
+	"name"	TEXT NOT NULL,
+	"url"	TEXT,
+	"description"	INTEGER NOT NULL,
+	"provider"	TEXT,
+	"date"	NUMERIC,
+	FOREIGN KEY("user_id") REFERENCES "users",
+	PRIMARY KEY("id" AUTOINCREMENT)"
+))
+
+db.execute("CREATE TABLE "users" (
+	"id"	INTEGER NOT NULL UNIQUE,
+	"username"	TEXT NOT NULL,
+	"hash"	TEXT NOT NULL,
+	"email"	TEXT,
+	"token"	TEXT,
+	PRIMARY KEY("id" AUTOINCREMENT)"
+))
+
+
 @app.after_request
 def after_request(response):
 	"""Ensure responses aren't cached"""
