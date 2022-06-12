@@ -3,9 +3,11 @@ from ssl import VERIFY_X509_PARTIAL_CHAIN
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_session import Session
 from flask_mail import Mail, Message
+from flask_sqlalchemy import SQLAlchemy
 from time import time
 import jwt
 import os
+import sqlalchemy
 from werkzeug.security import check_password_hash, generate_password_hash
 from dotenv import load_dotenv, find_dotenv
 from helpers import login_required, search
@@ -29,9 +31,16 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-# Configure SQLite to read database
-con = sqlite3.connect("finalproject.db", check_same_thread=False)
-db = con.cursor()
+# Configure SQLite to read database (if locally)
+#con = sqlite3.connect("finalproject.db", check_same_thread=False)
+#db = con.cursor()
+
+
+load_dotenv(find_dotenv())
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('heroku_db')
+db = SQLAlchemy(app)
+
 
 @app.after_request
 def after_request(response):
