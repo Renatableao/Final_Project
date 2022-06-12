@@ -30,9 +30,8 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configure SQLite to read database
-app.config["SQLALCHEMY_DATABASE_URI"] = 'postgres://cgrclmtuxjcmql:57fa3009cd53b1c524510bfdf20b463cb5d11e64180c3ca494ecc6d02d94ad53@ec2-54-165-178-178.compute-1.amazonaws.com:5432/d7bcgerk5e2tnt'
-# con = sqlite3.connect("finalproject.db", check_same_thread=False)
-#db = con.cursor()
+con = sqlite3.connect("finalproject.db", check_same_thread=False)
+db = con.cursor()
 
 @app.after_request
 def after_request(response):
