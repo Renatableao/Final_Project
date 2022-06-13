@@ -3,7 +3,6 @@ from ssl import VERIFY_X509_PARTIAL_CHAIN
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_session import Session
 from flask_mail import Mail, Message
-from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from time import time
 import jwt
