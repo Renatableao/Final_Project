@@ -1,19 +1,32 @@
-# Final_Project
-CS50 Final Project
+# New's Collection
 
-CS50 Final Project
 
-My name is Renata Barcelos. I'm from Brazil and this is my CS50's Final Project: "News Collection".
+
+<p align="center">
+  <img width="150"  src="https://github.com/Renatableao/Final_Project/blob/main/static/newspaper.png" />
+</p>
+
+This is my CS50's Final Project: "News Collection".
 
 You can browse and test it at: https://cs50xfinal.herokuapp.com/
 
-https://youtu.be/mZDIB0Jky38
+My presentation of this project can be found here: https://youtu.be/mZDIB0Jky38
 
 I've developed a responsive website built upon the data and functionality of an existing application called Bing News Search API.
 
 Listed below are the web technologies I used in this project:
 
-. HTML . CSS . JavaScript . Python . API (application programming interface) . JSON . SQLite . Flask . Flask-mail . BootStrap . Jinja 
+* HTML 
+* CSS 
+* JavaScript 
+* Python 
+* API (application programming interface) 
+* JSON
+* SQLite 
+* Flask 
+* Flask-mail 
+* BootStrap
+* Jinja 
 
 The website displays a list of the latest news articles published worldwide according to users search parameters such as Language and articles topics like "health, election, university and many others".
 
@@ -27,9 +40,9 @@ In addition to session features, users are allowed to change password if logged 
 
 All the information collected by inputs on the flask forms and routes of the website are stored in a database file named finalproject.db. This database consists of three tables:
 
-. users (holds information from user registration: id, username, hashed password, email and, if any, token for reseting password)
-. new (holds all article's informations requested from API)
-. user_news (holds information of articles saved as favorites such as: category, url, description, provider and publication date)
+* users (holds information from user registration: id, username, hashed password, email and, if any, token for reseting password)
+* new (holds all article's informations requested from API)
+* user_news (holds information of articles saved as favorites such as: category, url, description, provider and publication date)
 
 Those informations are then accessed by SQLite3 commands to, for example, start a user session based in the user_id or display in the personal page all the user's favorite articles.
 
@@ -37,12 +50,28 @@ Sensitive information as API key, passwords and SECRET_KEY are stored in local f
 
 The folder and files used and attached to this project are as follows:
 
-. flask_session 
-. static { images } { script.js } { styles.css } 
-. templates { index.html } { layout.html } { login.html } { my_list.html } { my_filtered_list.html } { news.html } { register.html } { reset_password } { change_password } { forgot_password }
-. app.py 
-. helpers.py 
-. finalproject.db 
-. requirements.txt (packages on which this project depends)
+* flask_session 
+* static 
+  * { images } 
+  * { script.js } 
+  * { styles.css } 
+* templates 
+  * { index.html } 
+  * { layout.html } 
+  * { login.html } 
+  * { my_list.html } 
+  * { my_filtered_list.html } 
+  * { news.html } 
+  * { register.html } 
+  * { reset_password } 
+  * { change_password } 
+  * { forgot_password }
+* app.py 
+* helpers.py 
+* finalproject.db 
+* requirements.txt (packages on which this project depends)
+* Procfile (Heroku's required file)
+* Youtube presentetion video
+* .gitignore
 
 This was a challenging but fun final task that allowed me to test all my new developing skills learnt at CS50. Hope you'll enjoy browsing!
